@@ -1,0 +1,32 @@
+﻿@model GetAppUserByIdDto
+<div class="avatar__wrap text-center mb-45" style="padding:40px 30px 35px; background:#fff; border-radius:16px; box-shadow:0 5px 25px rgba(0,0,0,0.06);">
+    <div class="avatar-img" style="margin-bottom:24px; display:flex; justify-content:center;">
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="" style="width:120px; height:120px; border-radius:50%; object-fit:cover; object-position:center; display:block; border:5px solid #f4f5f9; box-shadow:0 8px 20px rgba(0,0,0,0.1);">
+        }
+        else
+        {
+            var nameInitial = !string.IsNullOrWhiteSpace(Model.Name) ? Model.Name.Substring(0, 1).ToUpper() : "";
+            var surnameInitial = !string.IsNullOrWhiteSpace(Model.SurName) ? Model.SurName.Substring(0, 1).ToUpper() : "";
+            <div style="width:120px; height:120px; border-radius:50%; background:linear-gradient(135deg,#ff5e14,#ff8c4d); display:flex; align-items:center; justify-content:center; border:5px solid #f4f5f9; box-shadow:0 8px 20px rgba(0,0,0,0.1);">
+                <span style="color:#fff; font-size:38px; font-weight:700; letter-spacing:1px;">@nameInitial@surnameInitial</span>
+            </div>
+        }
+    </div>
+    <div class="avatar__info" style="margin-bottom:18px;">
+        <h5 style="font-size:19px; font-weight:700; color:#28314b; margin-bottom:14px;">@Model.Name @Model.SurName</h5>
+        <div class="avatar__info-social" style="display:flex; justify-content:center; gap:10px;">
+            <a href="#" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#f4f5f9; color:#28314b; text-decoration:none;"><i class="fab fa-facebook-f" style="font-size:13px;"></i></a>
+            <a href="#" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#f4f5f9; color:#28314b; text-decoration:none;"><i class="fab fa-twitter" style="font-size:13px;"></i></a>
+            <a href="#" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#f4f5f9; color:#28314b; text-decoration:none;"><i class="fab fa-instagram" style="font-size:13px;"></i></a>
+            <a href="#" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#f4f5f9; color:#28314b; text-decoration:none;"><i class="fab fa-behance" style="font-size:13px;"></i></a>
+            <a href="#" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:#f4f5f9; color:#28314b; text-decoration:none;"><i class="fab fa-linkedin" style="font-size:13px;"></i></a>
+        </div>
+    </div>
+    <div class="avatar__wrap-content" style="padding-top:18px; border-top:1px solid #f4f5f9;">
+        <p style="color:#6b7280; font-size:14px; line-height:1.8; margin:0;">
+            @Model.Description
+        </p>
+    </div>
+</div>

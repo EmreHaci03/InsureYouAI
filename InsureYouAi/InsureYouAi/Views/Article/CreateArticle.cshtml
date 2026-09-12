@@ -1,0 +1,129 @@
+﻿```cshtml
+@model CreateArticleDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    var categories = ViewBag.Categories as List<ResultCategoryDto>;
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-newspaper me-1"></i>Makaleler</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="ArticleList">Makaleler</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Yeni Ekle</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-8 col-lg-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="rounded-4 d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:52px; height:52px; background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+                        <i class="bi bi-newspaper text-white fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Yeni Makale</h5>
+                        <p class="text-muted small mb-0">Blog içeriği oluşturun</p>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <form asp-action="CreateArticle" method="post">
+                    <div class="row">
+                        <div class="col-md-8 mb-4">
+                            <label asp-for="Title" class="form-label fw-semibold">Başlık</label>
+                            <input asp-for="Title" class="form-control rounded-3" placeholder="Makale başlığı" autofocus />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <label asp-for="CategoryId" class="form-label fw-semibold">Kategori</label>
+                            <select asp-for="CategoryId" class="form-select rounded-3">
+                                <option value="">-- Seçiniz --</option>
+                                @if (categories != null)
+                                {
+                                    @foreach (var category in categories)
+                                    {
+                                        <option value="@category.CategoryId" selected="@(category.CategoryId == Model.CategoryId)">@category.CategoryName</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Content" class="form-label fw-semibold">İçerik</label>
+                        <textarea asp-for="Content" class="form-control rounded-3" rows="8" placeholder="Makale içeriğini yazın..."></textarea>
+                        <span asp-validation-for="Content" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="CoverImageUrl" class="form-label fw-semibold">Kapak Görseli URL</label>
+                            <input asp-for="CoverImageUrl" class="form-control rounded-3" placeholder="https://..." onchange="previewImg(event,'coverPreview')" />
+                            <span asp-validation-for="CoverImageUrl" class="text-danger small"></span>
+                            <img id="coverPreview" class="rounded-3 d-none mt-2 w-100" style="max-height:140px; object-fit:cover;" />
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="MainCoverImageUrl" class="form-label fw-semibold">Ana Kapak Görseli URL</label>
+                            <input asp-for="MainCoverImageUrl" class="form-control rounded-3" placeholder="https://..." onchange="previewImg(event,'mainCoverPreview')" />
+                            <span asp-validation-for="MainCoverImageUrl" class="text-danger small"></span>
+                            <img id="mainCoverPreview" class="rounded-3 d-none mt-2 w-100" style="max-height:140px; object-fit:cover;" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="ArticleList" class="btn btn-light rounded-pill px-4">
+                            Vazgeç
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="bi bi-check-lg me-1"></i>Kaydet
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImg(event, targetId) {
+        var preview = document.getElementById(targetId);
+        var url = event.target.value;
+        if (url) {
+            preview.src = url;
+            preview.classList.remove('d-none');
+        } else {
+            preview.classList.add('d-none');
+        }
+    }
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#Content'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}
+```

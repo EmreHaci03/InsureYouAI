@@ -1,0 +1,69 @@
+﻿@model List<ResultArticleDto>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-5">
+                <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width:72px; height:72px;">
+                    <i class="bi bi-journal-x fs-2 text-muted"></i>
+                </div>
+                <h6 class="fw-semibold">Bu kategoriye ait blog yazısı bulunmamaktadır.</h6>
+                <p class="text-muted small mb-0">Farklı bir kategori seçmeyi deneyebilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-lg-8">
+        @foreach (var item in Model)
+        {
+            var plainText = System.Text.RegularExpressions.Regex.Replace(item.Content, "<.*?>", " ").Trim();
+            var summary = plainText.Length > 180 ? plainText.Substring(0, 180) + "..." : plainText;
+
+            <div class="bsingle__post mb-50" style="background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 5px 25px rgba(0,0,0,0.07); transition:transform .3s ease, box-shadow .3s ease;"
+                 onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.12)';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 25px rgba(0,0,0,0.07)';">
+                <div class="bsingle__post-thumb" style="overflow:hidden; height:280px; position:relative;">
+                    <img src="@item.CoverImageUrl" style="width:100%; height:100%; object-fit:cover; transition:transform .4s ease;" alt="@item.Title">
+                    <span style="position:absolute; top:18px; left:18px; background:#ff5e14; color:#fff; padding:6px 16px; border-radius:30px; font-size:12px; font-weight:600; letter-spacing:.5px;">@item.Category</span>
+                </div>
+                <div class="bsingle__content" style="padding:30px 35px 35px;">
+                    <div class="meta-info" style="margin-bottom:14px;">
+                        <ul style="display:flex; gap:20px; list-style:none; padding:0; margin:0; flex-wrap:wrap;">
+                            <li style="color:#8891ac; font-size:14px;"><i class="fal fa-user" style="color:#ff5e14; margin-right:6px;"></i>@item.User</li>
+                            <li style="color:#8891ac; font-size:14px;"><i class="fal fa-calendar-alt" style="color:#ff5e14; margin-right:6px;"></i>@item.CreatedDate.ToString("dd MMMM yyyy")</li>
+                            <li style="color:#8891ac; font-size:14px;"><i class="fal fa-comment-dots" style="color:#ff5e14; margin-right:6px;"></i>@item.CommentCount Yorum</li>
+                        </ul>
+                    </div>
+                    <h2 style="font-size:24px; margin-bottom:16px; line-height:1.4;">
+                        <a href="/Blog/BlogDetail/@item.ArticleId" style="color:#28314b; font-weight:700; text-decoration:none; transition:color .2s;">
+                            @item.Title
+                        </a>
+                    </h2>
+                    <p style="color:#6b7280; line-height:1.8; margin-bottom:22px;">@summary</p>
+                    <div class="blog__btn">
+                        <a href="/Blog/BlogDetail/@item.ArticleId" class="btn" style="display:inline-flex; align-items:center; gap:8px; padding:12px 28px; background:#28314b; color:#fff; border-radius:8px; font-weight:600; text-decoration:none; transition:background .2s;">
+                            Daha Fazlası <i class="fal fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="pagination-wrap mb-50">
+            <nav>
+                <ul class="pagination" style="display:flex; gap:8px; list-style:none; padding:0; justify-content:center;">
+                    <li class="page-item"><a href="#" style="display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:8px; background:#f4f5f9; color:#28314b; text-decoration:none;"><i class="fas fa-angle-double-left"></i></a></li>
+                    <li class="page-item active"><a href="#" style="display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:8px; background:#ff5e14; color:#fff; text-decoration:none; font-weight:600;">1</a></li>
+                    <li class="page-item"><a href="#" style="display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:8px; background:#f4f5f9; color:#28314b; text-decoration:none;">2</a></li>
+                    <li class="page-item"><a href="#" style="display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:8px; background:#f4f5f9; color:#28314b; text-decoration:none;">3</a></li>
+                    <li class="page-item"><a href="#" style="display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:8px; background:#f4f5f9; color:#28314b; text-decoration:none;">...</a></li>
+                    <li class="page-item"><a href="#" style="display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:8px; background:#f4f5f9; color:#28314b; text-decoration:none;">10</a></li>
+                    <li class="page-item"><a href="#" style="display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:8px; background:#f4f5f9; color:#28314b; text-decoration:none;"><i class="fas fa-angle-double-right"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+}

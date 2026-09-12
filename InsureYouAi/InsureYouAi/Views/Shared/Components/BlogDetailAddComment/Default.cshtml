@@ -1,0 +1,61 @@
+﻿<div id="comments" class="comments-area mt-45">
+    <div id="respond" class="comment-respond" style="background:#fff; border-radius:16px; padding:35px; box-shadow:0 5px 25px rgba(0,0,0,0.06);">
+        <h3 id="reply-title" class="comment-reply-title" style="font-size:22px; font-weight:700; color:#28314b; margin-bottom:8px; position:relative; padding-bottom:16px;">
+            Yorum Bırakın
+            <span style="position:absolute; bottom:0; left:0; width:50px; height:3px; background:#ff5e14; border-radius:3px;"></span>
+        </h3>
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <p class="comment-notes" style="color:#8891ac; font-size:13.5px; margin-bottom:28px;">
+                <span id="email-notes">E-posta adresiniz yayınlanmayacaktır.</span> Zorunlu alanlar <span class="required" style="color:#ff5e14;">*</span> ile işaretlenmiştir.
+            </p>
+
+            <form asp-controller="Blog" asp-action="CreateComment" method="post" id="commentform" class="comment-form" novalidate>
+                <input type="hidden" name="ArticleId" value="@ViewBag.ArticleId" />
+
+                <div class="comment-form-comment mb-3">
+                    <label for="comment" style="display:block; font-weight:600; color:#28314b; margin-bottom:10px; font-size:14px;">Yorumunuz</label>
+                    <textarea id="comment" name="CommentDetail" cols="45" rows="6" maxlength="65525" required
+                          placeholder="Düşüncelerinizi bizimle paylaşın..."
+                          style="width:100%; padding:16px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; color:#28314b; outline:none; box-sizing:border-box; resize:vertical; font-family:inherit; line-height:1.6; transition:border-color .2s, background .2s;"
+                          onfocus="this.style.borderColor='#ff5e14'; this.style.background='#fff';"
+                          onblur="this.style.borderColor='#eceef4'; this.style.background='#f9fafc';"></textarea>
+                </div>
+
+                <div class="form-submit">
+                    <button type="submit" name="submit" id="submit" class="submit"
+                            style="display:inline-flex; align-items:center; gap:10px; padding:14px 32px; background:#ff5e14; color:#fff; border:none; border-radius:10px; font-weight:600; font-size:14.5px; cursor:pointer; transition:background .25s ease, transform .15s ease;"
+                            onmouseover="this.style.background='#28314b';" onmouseout="this.style.background='#ff5e14';"
+                            onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                        Yorumu Gönder <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div style="text-align:center; padding:30px 20px; background:#f9fafc; border-radius:14px;">
+                <div style="width:64px; height:64px; border-radius:50%; background:#fdeaea; display:flex; align-items:center; justify-content:center; margin:0 auto 18px;">
+                    <i class="fas fa-lock" style="color:#ff5e14; font-size:24px;"></i>
+                </div>
+                <h5 style="color:#28314b; font-weight:700; margin-bottom:10px; font-size:17px;">Yorum yapmak için giriş yapmalısınız</h5>
+                <p style="color:#8891ac; font-size:14px; margin-bottom:22px;">Düşüncelerinizi paylaşmak için lütfen hesabınıza giriş yapın veya yeni bir hesap oluşturun.</p>
+
+                <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+                    <a href="/Account/Login?returnUrl=@Context.Request.Path"
+                       style="display:inline-flex; align-items:center; gap:8px; padding:12px 26px; background:#ff5e14; color:#fff; border-radius:10px; font-weight:600; font-size:14px; text-decoration:none; transition:background .25s ease;"
+                       onmouseover="this.style.background='#28314b';" onmouseout="this.style.background='#ff5e14';">
+                        <i class="fas fa-sign-in-alt"></i> Giriş Yap
+                    </a>
+                    <a href="/Account/Register?returnUrl=@Context.Request.Path"
+                       style="display:inline-flex; align-items:center; gap:8px; padding:12px 26px; background:#fff; color:#28314b; border:1.5px solid #eceef4; border-radius:10px; font-weight:600; font-size:14px; text-decoration:none; transition:all .25s ease;"
+                       onmouseover="this.style.borderColor='#ff5e14'; this.style.color='#ff5e14';" onmouseout="this.style.borderColor='#eceef4'; this.style.color='#28314b';">
+                        <i class="fas fa-user-plus"></i> Kayıt Ol
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- #respond -->
+</div>

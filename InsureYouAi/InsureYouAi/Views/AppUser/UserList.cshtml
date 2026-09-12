@@ -1,0 +1,175 @@
+﻿@model List<ResultAppUserDto>
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    string[] gradients = new[]
+    {
+        "linear-gradient(135deg,#6366f1,#8b5cf6)",
+        "linear-gradient(135deg,#06b6d4,#3b82f6)",
+        "linear-gradient(135deg,#f59e0b,#ef4444)",
+        "linear-gradient(135deg,#10b981,#059669)",
+        "linear-gradient(135deg,#ec4899,#f43f5e)",
+        "linear-gradient(135deg,#8b5cf6,#6366f1)"
+    };
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-people-fill me-1"></i>Kullanıcılar</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="UserList">Kullanıcılar</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Kullanıcı Listesi</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-4 gap-3">
+    <div>
+        <h4 class="fw-bold mb-1">Kullanıcılar <span class="badge rounded-pill bg-light text-dark ms-1">@(Model?.Count ?? 0)</span></h4>
+        <p class="text-muted mb-0 small">Sistemdeki kayıtlı kullanıcıları görüntüleyin</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <div class="position-relative">
+            <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
+            <input class="form-control ps-5 rounded-pill border-0 shadow-sm" type="text" placeholder="Kullanıcı ara..." id="searchInput" style="min-width:240px;">
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row g-3" id="userGrid">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i];
+            var gradient = gradients[i % gradients.Length];
+            var fullName = $"{item.Name} {item.SurName}".Trim();
+            var safeName = string.IsNullOrWhiteSpace(fullName) ? "İsimsiz Kullanıcı" : fullName;
+            var initial = string.IsNullOrWhiteSpace(item.Name) ? "?" : item.Name.Trim()[0].ToString().ToUpper();
+            var hasImage = !string.IsNullOrWhiteSpace(item.ImageUrl);
+            var hasDescription = !string.IsNullOrWhiteSpace(item.Description);
+
+            <div class="col-xl-3 col-lg-4 col-md-6 user-card-wrap" data-name="@safeName.ToLower()">
+                <div class="card border-0 shadow-sm h-100 user-card position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 opacity-25" style="width:90px; height:90px; background:@gradient; border-radius:0 0 0 100%;"></div>
+
+                    <div class="card-body position-relative text-center">
+                        <div style="height:72px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+                            @if (hasImage)
+                            {
+                                <img src="@item.ImageUrl" alt="@safeName"
+                                     class="rounded-circle"
+                                     style="width:72px; height:72px; object-fit:cover; border:3px solid #fff; box-shadow:0 4px 14px rgba(0,0,0,0.12);" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
+                                     style="width:72px; height:72px; background:@gradient; font-size:26px; box-shadow:0 4px 14px rgba(0,0,0,0.12);">
+                                    @initial
+                                </div>
+                            }
+                        </div>
+
+                        <h6 class="fw-semibold mb-1" style="color:#28314b;">@safeName</h6>
+
+                        <div style="min-height:42px;" class="d-flex align-items-center justify-content-center">
+                            @if (hasDescription)
+                            {
+                                <p class="text-muted small mb-0" style="line-height:1.6;">
+                                    @(item.Description!.Length > 70 ? item.Description.Substring(0, 70) + "…" : item.Description)
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="text-muted small mb-0 fst-italic">Açıklama girilmemiş</p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-top-0 pt-0 d-flex gap-2 flex-wrap">
+                        <a asp-action="UserProfile" asp-route-id="@item.Id" class="text-decoration-none small fw-semibold flex-grow-1" style="color:#6366f1;">
+                            Profili Gör <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <a asp-controller="Role" asp-action="AssignRole" asp-route-userId="@item.Id" class="btn btn-sm btn-icon border-0" style="background:rgba(16,185,129,0.1); color:#10b981; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:10px;" title="Rol Ata">
+                            <i class="bi bi-shield-fill-check"></i>
+                        </a>
+                        <a asp-action="UserComments" asp-route-id="@item.Id" class="text-decoration-none small fw-semibold" style="color:#8891ac;" title="Yorumlarını Gör">
+                            <i class="bi bi-chat-square-text-fill"></i>
+                        </a>
+                        <a asp-action="UserAnalyse" asp-route-id="@item.Id" class="btn btn-sm btn-icon border-0" style="background:rgba(99,102,241,0.1); color:#6366f1; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:10px;" title="Makale Bazlı Analiz">
+                            <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                        </a>
+                        <a asp-action="UserAnalyseByComment" asp-route-id="@item.Id" class="btn btn-sm btn-icon border-0" style="background:rgba(236,72,153,0.1); color:#ec4899; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:10px;" title="Yorum Bazlı Karakter Analizi">
+                            <i class="bi bi-person-lines-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm position-relative overflow-hidden">
+        <div class="position-absolute top-0 end-0 opacity-25" style="width:120px; height:120px; background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:0 0 0 100%;"></div>
+        <div class="card-body text-center py-5 position-relative">
+            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                 style="width:80px; height:80px; background:linear-gradient(135deg,#f4f5f9,#eceef4);">
+                <i class="bi bi-person-x fs-2 text-muted"></i>
+            </div>
+            <h6 class="fw-semibold mb-1">Henüz kullanıcı bulunmuyor</h6>
+            <p class="text-muted small mb-0">Kayıtlı kullanıcılar burada listelenecek</p>
+        </div>
+    </div>
+}
+
+<style>
+    .user-card {
+        transition: all 0.25s ease;
+        border-radius: 16px;
+    }
+
+        .user-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                var term = this.value.toLowerCase();
+                document.querySelectorAll('.user-card-wrap').forEach(function (card) {
+                    card.style.display = card.dataset.name.includes(term) ? '' : 'none';
+                });
+            });
+        }
+
+    });
+</script>

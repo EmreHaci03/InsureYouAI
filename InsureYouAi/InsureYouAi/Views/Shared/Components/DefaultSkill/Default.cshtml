@@ -1,0 +1,76 @@
+﻿<!-- skill-area -->
+<section id="skill" class="skill-area p-relative fix pt-120" style="background:#f9fafc;">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-6 col-md-12 col-sm-12 pr-30">
+                <div class="skills-img" data-aos="fade-right" data-aos-duration="1000" style="border-radius:20px; overflow:hidden; box-shadow:0 15px 40px rgba(0,0,0,0.1);">
+                    <img src="~/defaultimages/skills-img.png" alt="img" class="img" style="width:100%; display:block;">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="skills-content s-about-content" data-aos="fade-left" data-aos-duration="1000">
+                    <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                        <i class="fal fa-award"></i> Neden Biz
+                    </span>
+                    <div class="skills-title pb-20">
+                        <h2 style="font-size:32px; font-weight:700; color:#28314b; line-height:1.35;">Alanımızda En İyisiyiz</h2>
+                    </div>
+                    <p style="color:#6b7280; font-size:15px; line-height:1.8;">Yılların verdiği tecrübe ve uzmanlıkla, sigorta sektöründe güvenilir ve kaliteli hizmet sunmaya devam ediyoruz.</p>
+                    <div class="mt-20">
+                        <div class="skills">
+                            <div class="skill mb-30">
+                                <div class="skill-name" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <span style="color:#28314b; font-weight:600; font-size:14.5px;">Başarılı Vakalar</span>
+                                    <span style="color:#ff5e14; font-weight:700; font-size:14.5px;">%80</span>
+                                </div>
+                                <div class="skill-bar" style="width:100%; height:8px; background:#eceef4; border-radius:20px; overflow:hidden;">
+                                    <div class="skill-per" data-percent="80" style="width:0%; height:100%; background:linear-gradient(90deg,#ff5e14,#ff8c4d); border-radius:20px; transition:width 1.4s ease;"></div>
+                                </div>
+                            </div>
+                            <div class="skill mb-30">
+                                <div class="skill-name" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <span style="color:#28314b; font-weight:600; font-size:14.5px;">Sigorta Tecrübesi</span>
+                                    <span style="color:#ff5e14; font-weight:700; font-size:14.5px;">%90</span>
+                                </div>
+                                <div class="skill-bar" style="width:100%; height:8px; background:#eceef4; border-radius:20px; overflow:hidden;">
+                                    <div class="skill-per" data-percent="90" style="width:0%; height:100%; background:linear-gradient(90deg,#ff5e14,#ff8c4d); border-radius:20px; transition:width 1.4s ease;"></div>
+                                </div>
+                            </div>
+                            <div class="skill mb-30">
+                                <div class="skill-name" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <span style="color:#28314b; font-weight:600; font-size:14.5px;">Dijital Poliçe</span>
+                                    <span style="color:#ff5e14; font-weight:700; font-size:14.5px;">%70</span>
+                                </div>
+                                <div class="skill-bar" style="width:100%; height:8px; background:#eceef4; border-radius:20px; overflow:hidden;">
+                                    <div class="skill-per" data-percent="70" style="width:0%; height:100%; background:linear-gradient(90deg,#ff5e14,#ff8c4d); border-radius:20px; transition:width 1.4s ease;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- skill-area-end -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var bars = document.querySelectorAll('.skill-per');
+
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    var bar = entry.target;
+                    bar.style.width = bar.dataset.percent + '%';
+                    observer.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        bars.forEach(function (bar) {
+            observer.observe(bar);
+        });
+    });
+</script>
+<!-- skill-area-end -->

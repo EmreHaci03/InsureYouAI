@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "AI Sesli Yanıt";
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <h5 class="mb-3 fw-semibold">
+            <i class="bi bi-volume-up-fill text-primary me-1"></i>Metni Sese Çevir
+        </h5>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+            </div>
+        }
+
+        <form asp-action="SpeakInsuranceAnswer" method="post" id="speakForm">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Seslendirilecek Metin</label>
+                <textarea name="speechText" class="form-control rounded-3" rows="5"
+                          placeholder="Sese çevrilecek metni buraya yazın...">@ViewBag.SpeechText</textarea>
+            </div>
+
+            <button type="submit" id="speakBtn" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                <i class="bi bi-play-fill me-1"></i>Seslendir
+            </button>
+        </form>
+
+        @if (ViewBag.AudioUrl != null)
+        {
+            <hr class="my-4" />
+            <h6 class="fw-semibold mb-3">
+                <i class="bi bi-soundwave me-1" style="color:#6366f1;"></i>Oluşturulan Ses
+            </h6>
+            <audio controls class="w-100">
+                <source src="@ViewBag.AudioUrl" type="audio/mpeg">
+                Tarayıcınız audio etiketini desteklemiyor.
+            </audio>
+
+            <div class="mt-2">
+                <a href="@ViewBag.AudioUrl" download class="btn btn-sm btn-outline-secondary rounded-pill">
+                    <i class="bi bi-download me-1"></i>MP3 Olarak İndir
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    document.getElementById('speakForm').addEventListener('submit', function () {
+        var btn = document.getElementById('speakBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Ses Oluşturuluyor...';
+    });
+</script>

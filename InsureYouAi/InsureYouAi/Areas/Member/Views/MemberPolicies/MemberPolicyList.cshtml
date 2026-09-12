@@ -1,0 +1,189 @@
+﻿@model List<ResultPolicyDto>
+@{
+    Layout = "~/Areas/Member/Views/Shared/_MemberLayout.cshtml";
+    ViewData["Title"] = "Poliçelerim";
+}
+
+<div class="m-page-head">
+    <h1>Poliçelerim</h1>
+    <p>Toplam @(Model?.Count ?? 0) poliçeniz bulunuyor.</p>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div style="display:flex; flex-direction:column; gap:16px;">
+        @foreach (var item in Model)
+        {
+            var statusInfo = (item.Status ?? "").ToLower() switch
+            {
+                "aktif" or "active" => ("var(--success)", "var(--success-100)", "Aktif"),
+                "pasif" or "iptal" or "cancelled" => ("var(--danger)", "var(--danger-100)", item.Status),
+                "beklemede" or "pending" => ("var(--accent-600)", "var(--accent-100)", "Beklemede"),
+                _ => ("var(--text-600)", "var(--paper)", item.Status ?? "Belirsiz")
+            };
+
+            var isExpired = item.EndDate < DateTime.Now;
+
+            <div class="m-card policy-card">
+                <div class="m-card__body policy-card__body">
+
+                    <div class="policy-card__icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-600)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+
+                    <div class="policy-card__main">
+                        <div class="policy-card__top">
+                            <div>
+                                <h3 class="policy-card__type">@item.PolicyType</h3>
+                                <span class="policy-card__number">#@item.PolicyNumber</span>
+                            </div>
+                            <span class="m-badge" style="background:@statusInfo.Item2; color:@statusInfo.Item1;">
+                                @statusInfo.Item3
+                            </span>
+                        </div>
+
+                        <div class="policy-card__grid">
+                            <div class="policy-card__field">
+                                <span class="policy-card__label">Prim Tutarı</span>
+                                <span class="policy-card__value">@item.PremiumAmount.ToString("N0") ₺</span>
+                            </div>
+                            <div class="policy-card__field">
+                                <span class="policy-card__label">Başlangıç</span>
+                                <span class="policy-card__value">@item.StartDate.ToString("dd MMM yyyy")</span>
+                            </div>
+                            <div class="policy-card__field">
+                                <span class="policy-card__label">Bitiş</span>
+                                <span class="policy-card__value" style="color:@(isExpired ? "var(--danger)" : "var(--text-900)");">
+                                    @item.EndDate.ToString("dd MMM yyyy")
+                                    @if (isExpired)
+                                    {
+                                        <span style="font-size:11px; font-weight:600;"> · Süresi doldu</span>
+                                    }
+                                </span>
+                            </div>
+                            <div class="policy-card__field">
+                                <span class="policy-card__label">Poliçe Sahibi</span>
+                                <span class="policy-card__value">@item.User</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="policy-card__actions">
+                        <a asp-area="Member" asp-controller="MemberPolicies" asp-action="PolicyDetail" asp-route-id="@item.PolicyId" class="m-btn m-btn-ghost">
+                            Detay
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="m-card">
+        <div class="m-empty">
+            <div class="m-empty__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <h3>Henüz poliçeniz bulunmuyor</h3>
+            <p>Aktif bir sigorta poliçeniz görünmüyor.</p>
+        </div>
+    </div>
+}
+
+<style>
+    .policy-card__body {
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 22px 24px;
+        flex-wrap: wrap;
+    }
+
+    .policy-card__icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: var(--accent-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .policy-card__main {
+        flex: 1;
+        min-width: 260px;
+    }
+
+    .policy-card__top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+
+    .policy-card__type {
+        font-family: var(--font-display);
+        font-size: 16.5px;
+        font-weight: 600;
+        color: var(--text-900);
+        margin: 0 0 2px;
+    }
+
+    .policy-card__number {
+        font-size: 12.5px;
+        color: var(--text-400);
+    }
+
+    .policy-card__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 14px;
+    }
+
+    .policy-card__field {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .policy-card__label {
+        font-size: 11px;
+        color: var(--text-400);
+    }
+
+    .policy-card__value {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--text-900);
+    }
+
+    .policy-card__actions {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    @@media (max-width: 640px) {
+        .policy-card__body {
+            flex-direction: column;
+        }
+
+        .policy-card__actions {
+            width: 100%;
+        }
+
+            .policy-card__actions .m-btn {
+                width: 100%;
+                justify-content: center;
+            }
+    }
+</style>

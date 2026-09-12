@@ -1,0 +1,95 @@
+﻿@model GetAppUserByIdDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    var fullName = $"{Model?.Name} {Model?.SurName}".Trim();
+    var safeName = string.IsNullOrWhiteSpace(fullName) ? "İsimsiz Kullanıcı" : fullName;
+    var initial = string.IsNullOrWhiteSpace(Model?.Name) ? "?" : Model.Name.Trim()[0].ToString().ToUpper();
+    var hasImage = !string.IsNullOrWhiteSpace(Model?.ImageUrl);
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-person-circle me-1"></i>Kullanıcı Profili</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="UserList">Kullanıcılar</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Profil</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-lg position-relative overflow-hidden" style="border-radius:22px;">
+
+            <!-- Kapak alanı -->
+            <div style="height:140px; background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);"></div>
+
+            <div class="card-body text-center pt-0" style="margin-top:-60px; padding-left:40px; padding-right:40px; padding-bottom:40px;">
+
+                @if (hasImage)
+                {
+                    <div class="mb-3 mx-auto" style="width:130px; height:130px; border-radius:50%; overflow:hidden; border:5px solid #fff; box-shadow:0 10px 28px rgba(0,0,0,0.18); background:#f4f5f9;">
+                        <img src="@Model.ImageUrl" alt="@safeName"
+                             style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;" />
+                    </div>
+                }
+                else
+                {
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 fw-bold text-white mx-auto"
+                         style="width:130px; height:130px; background:linear-gradient(135deg,#6366f1,#8b5cf6); font-size:44px; border:5px solid #fff; box-shadow:0 10px 28px rgba(0,0,0,0.18);">
+                        @initial
+                    </div>
+                }
+
+                <h4 class="fw-bold mb-1" style="color:#28314b; font-size:24px;">@safeName</h4>
+
+                <span class="badge rounded-pill mb-4" style="background:rgba(99,102,241,0.1); color:#6366f1; font-weight:700; padding:8px 20px; font-size:13px;">
+                    <i class="bi bi-shield-check-fill me-1"></i>Yönetici
+                </span>
+
+                <div class="row g-3 justify-content-center mb-4">
+                    <div class="col-4">
+                        <div class="rounded-4 py-3" style="background:#f9fafc;">
+                            <i class="bi bi-newspaper mb-1 d-block" style="color:#6366f1; font-size:18px;"></i>
+                            <span class="fw-bold d-block" style="color:#28314b; font-size:15px;">@ViewBag.UserArticle</span>
+                            <span class="text-muted" style="font-size:11px;">Makale</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="rounded-4 py-3" style="background:#f9fafc;">
+                            <i class="bi bi-chat-square-text-fill mb-1 d-block" style="color:#d97757; font-size:18px;"></i>
+                            <span class="fw-bold d-block" style="color:#28314b; font-size:15px;">@ViewBag.UserComments</span>
+                            <span class="text-muted" style="font-size:11px;">Yorum</span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="rounded-4 py-3" style="background:#f9fafc;">
+                            <i class="bi bi-patch-check-fill mb-1 d-block" style="color:#10b981; font-size:18px;"></i>
+                            <span class="fw-bold d-block" style="color:#28314b; font-size:15px;">@ViewBag.ApprovedComments</span>
+                            <span class="text-muted" style="font-size:11px;">Onaylı Yorum</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-start rounded-4 p-4" style="background:linear-gradient(135deg,#f9fafc,#f4f5f9); border-left:3px solid #6366f1;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-quote" style="color:#6366f1; font-size:20px;"></i>
+                        <span class="fw-semibold small" style="color:#28314b;">Hakkında</span>
+                    </div>
+                    <p class="text-muted small mb-0" style="line-height:1.8;">
+                        @(string.IsNullOrWhiteSpace(Model?.Description) ? "Henüz bir açıklama eklenmemiş." : Model.Description)
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

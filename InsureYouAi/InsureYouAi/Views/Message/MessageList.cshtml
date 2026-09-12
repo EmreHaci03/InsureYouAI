@@ -1,0 +1,327 @@
+﻿@model List<ResultMessageDto>
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    int unreadCount = Model?.Count(x => !x.IsRead) ?? 0;
+    string[] gradients = new[]
+    {
+        "linear-gradient(135deg,#6366f1,#8b5cf6)",
+        "linear-gradient(135deg,#06b6d4,#3b82f6)",
+        "linear-gradient(135deg,#f59e0b,#ef4444)",
+        "linear-gradient(135deg,#10b981,#059669)",
+        "linear-gradient(135deg,#ec4899,#f43f5e)",
+        "linear-gradient(135deg,#8b5cf6,#6366f1)"
+    };
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-envelope-fill me-1"></i>Mesajlar</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="MessageList">Mesajlar</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-4 gap-3">
+    <div>
+        <h4 class="fw-bold mb-1">
+            Mesajlar
+            <span class="badge rounded-pill bg-light text-dark ms-1">@(Model?.Count ?? 0)</span>
+            @if (unreadCount > 0)
+            {
+                <span class="badge rounded-pill" style="background:#ef4444; color:#fff;">@unreadCount okunmamış</span>
+            }
+        </h4>
+        <p class="text-muted mb-0 small">Gelen mesajları görüntüleyin ve yönetin</p>
+    </div>
+    <div class="position-relative">
+        <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
+        <input class="form-control ps-5 rounded-pill border-0 shadow-sm" type="text" placeholder="Mesajlarda ara..." id="searchInput" style="min-width:260px;">
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="d-flex flex-column gap-3" id="messageList">
+        @{
+            int i = 0;
+        }
+        @foreach (var item in Model.OrderByDescending(x => x.SendDate))
+        {
+            var gradient = gradients[i % gradients.Length];
+            i++;
+            var safeName = item.NameSurname ?? "";
+            var safeSubject = item.Subject ?? "(Konu yok)";
+            var searchKey = $"{safeName} {safeSubject} {item.Email}".ToLower();
+            var initial = string.IsNullOrWhiteSpace(safeName) ? "?" : safeName.Trim()[0].ToString().ToUpper();
+            var fullMessage = item.MessageDetail ?? "";
+            var preview = fullMessage.Length > 130 ? fullMessage.Substring(0, 130) + "…" : fullMessage;
+
+            <div class="card border-0 shadow-sm message-card position-relative overflow-hidden @(!item.IsRead ? "unread-message" : "")" data-name="@searchKey">
+                @if (!item.IsRead)
+                {
+                    <div class="position-absolute top-0 start-0" style="width:5px; height:100%; background:linear-gradient(180deg,#6366f1,#8b5cf6);"></div>
+                }
+                <div class="card-body py-3 px-4">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 fw-bold text-white position-relative"
+                             style="width:48px; height:48px; background:@(item.IsRead ? "linear-gradient(135deg,#c3c9d6,#e2e5eb)" : gradient); font-size:17px;">
+                            @initial
+                            @if (!item.IsRead)
+                            {
+                                <span class="position-absolute rounded-circle" style="width:12px; height:12px; background:#ef4444; border:2px solid #fff; top:-2px; right:-2px;"></span>
+                            }
+                        </div>
+
+                        <div class="flex-grow-1" style="min-width:0;">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1">
+                                <span class="fw-semibold" style="color:#28314b; font-size:15px;">@safeName</span>
+                                <span class="text-muted small flex-shrink-0 d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock"></i>@item.SendDate.ToString("dd MMM yyyy, HH:mm")
+                                </span>
+                            </div>
+
+                            <p class="mb-2 @(item.IsRead ? "text-muted" : "fw-semibold")" style="font-size:14.5px;">
+                                <i class="bi bi-tag-fill me-1" style="color:#6366f1; font-size:12px;"></i>@safeSubject
+                            </p>
+
+                            @{
+                                var priorityBadge = (item.Priority ?? "").ToLower() switch
+                                {
+                                    "yüksek" or "high" => ("#ef4444", "#fdeaea", "bi-exclamation-triangle-fill"),
+                                    "orta" or "medium" => ("#f59e0b", "#fef3e2", "bi-dash-circle-fill"),
+                                    "düşük" or "low" => ("#10b981", "#e6f7f1", "bi-check-circle-fill"),
+                                    _ => ("#6b7280", "#f1f2f4", "bi-circle-fill")
+                                };
+                            }
+                            @if (!string.IsNullOrEmpty(item.Priority) || !string.IsNullOrEmpty(item.AICategory))
+                            {
+                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                    @if (!string.IsNullOrEmpty(item.AICategory))
+                                    {
+                                        <span class="badge rounded-pill d-inline-flex align-items-center gap-1" style="background:#eef0ff; color:#4f46e5; font-weight:500; font-size:11.5px; padding:5px 10px;">
+                                            <i class="bi bi-robot"></i>@item.AICategory
+                                        </span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.Priority))
+                                    {
+                                        <span class="badge rounded-pill d-inline-flex align-items-center gap-1" style="background:@priorityBadge.Item2; color:@priorityBadge.Item1; font-weight:500; font-size:11.5px; padding:5px 10px;">
+                                            <i class="bi @priorityBadge.Item3"></i>@item.Priority
+                                        </span>
+                                    }
+                                </div>
+                            }
+
+                            <div class="bg-light rounded-3 p-3 mb-2" style="border-left:3px solid #eceef4;">
+                                <p class="mb-0 small text-body" style="line-height:1.6;">@preview</p>
+                            </div>
+
+                            <div class="d-flex flex-wrap align-items-center gap-3 small text-muted">
+                                <span class="d-flex align-items-center gap-1"><i class="bi bi-envelope"></i>@item.Email</span>
+                                @if (!string.IsNullOrEmpty(item.PhoneNumber))
+                                {
+                                    <span class="d-flex align-items-center gap-1"><i class="bi bi-telephone"></i>@item.PhoneNumber</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="dropdown flex-shrink-0">
+                            <button class="btn btn-sm btn-icon border-0 text-muted" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                @if (!item.IsRead)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-action="ChangeMessageStatusToTrue" asp-route-id="@item.MessageId">
+                                            <i class="bi bi-envelope-open-fill me-2 text-primary"></i>Okundu İşaretle
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-action="AutoReplyMessage" asp-route-id="@item.MessageId">
+                                            <i class="bi bi-robot me-2 text-primary"></i>AI ile Otomatik Yanıtla
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-action="ChangeMessageStatusToFalse" asp-route-id="@item.MessageId">
+                                            <i class="bi bi-envelope-fill me-2 text-primary"></i>Okunmadı İşaretle
+                                        </a>
+                                    </li>                          
+                                }
+                                <li>
+                                    <button type="button" class="dropdown-item text-danger btn-delete-message"
+                                            data-id="@item.MessageId" data-name="@safeName" data-subject="@safeSubject" data-preview="@preview" data-gradient="@gradient" data-initial="@initial">
+                                        <i class="bi bi-trash-fill me-2"></i>Sil
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width:72px; height:72px;">
+                <i class="bi bi-inbox fs-2 text-muted"></i>
+            </div>
+            <h6 class="fw-semibold">Henüz mesaj yok</h6>
+            <p class="text-muted small mb-0">Gelen mesajlar burada listelenecek.</p>
+        </div>
+    </div>
+}
+
+<form id="deleteForm" asp-action="DeleteMessage" method="post" class="d-none">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" id="deleteMessageId" value="" />
+</form>
+
+<!-- Silme Onay Modalı -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius:20px; overflow:hidden;">
+            <div class="modal-body p-0">
+                <div class="text-center pt-4 pb-2 px-4">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                         style="width:72px; height:72px; background:#fdeaea;">
+                        <i class="bi bi-trash3-fill text-danger" style="font-size:28px;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">Mesajı Sil</h5>
+                    <p class="text-muted small mb-3">Bu işlem geri alınamaz. Devam etmek istediğinize emin misiniz?</p>
+                </div>
+
+                <div class="mx-4 mb-4 p-3 rounded-3 bg-light d-flex align-items-start gap-3" style="border-left:3px solid #dc3545;">
+                    <div id="deleteMsgAvatar" class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                         style="width:38px; height:38px; font-size:14px;">
+                        ?
+                    </div>
+                    <div class="min-w-0 text-start">
+                        <h6 id="deleteMsgName" class="fw-semibold mb-0 small"></h6>
+                        <p id="deleteMsgSubject" class="text-muted small mb-1" style="font-size:12.5px;"></p>
+                        <p id="deleteMsgPreview" class="text-muted small mb-0" style="line-height:1.5;"></p>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 px-4 pb-4">
+                    <button type="button" class="btn btn-light flex-grow-1 rounded-pill fw-semibold" data-bs-dismiss="modal">
+                        Vazgeç
+                    </button>
+                    <button type="button" id="confirmDeleteMsgBtn" class="btn btn-danger flex-grow-1 rounded-pill fw-semibold shadow-sm">
+                        <i class="bi bi-trash3-fill me-1"></i>Evet, Sil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .message-card {
+        transition: all 0.25s ease;
+        border-radius: 16px;
+    }
+
+        .message-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08) !important;
+        }
+
+    .unread-message {
+        background: #f8f8fe;
+    }
+
+    .min-w-0 {
+        min-width: 0;
+    }
+
+    #deleteConfirmModal .modal-content {
+        animation: modalPopMsg .25s ease;
+    }
+
+    @@keyframes modalPopMsg {
+        from {
+            opacity: 0;
+            transform: scale(.92);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    #confirmDeleteMsgBtn:hover {
+        background: #b02a37;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                var term = this.value.toLowerCase();
+                document.querySelectorAll('.message-card').forEach(function (row) {
+                    row.style.display = row.dataset.name.includes(term) ? '' : 'none';
+                });
+            });
+        }
+
+        var deleteModalEl = document.getElementById('deleteConfirmModal');
+        var deleteModal = new bootstrap.Modal(deleteModalEl);
+        var pendingDeleteId = null;
+
+        document.querySelectorAll('.btn-delete-message').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                pendingDeleteId = this.dataset.id;
+
+                document.getElementById('deleteMsgName').textContent = this.dataset.name;
+                document.getElementById('deleteMsgSubject').textContent = this.dataset.subject;
+                document.getElementById('deleteMsgPreview').textContent = this.dataset.preview;
+
+                var avatar = document.getElementById('deleteMsgAvatar');
+                avatar.style.background = this.dataset.gradient;
+                avatar.textContent = this.dataset.initial;
+
+                deleteModal.show();
+            });
+        });
+
+        document.getElementById('confirmDeleteMsgBtn').addEventListener('click', function () {
+            if (!pendingDeleteId) return;
+
+            var btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Siliniyor...';
+
+            document.getElementById('deleteMessageId').value = pendingDeleteId;
+            document.getElementById('deleteForm').submit();
+        });
+
+    });
+</script>

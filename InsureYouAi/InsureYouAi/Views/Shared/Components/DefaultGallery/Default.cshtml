@@ -1,0 +1,61 @@
+﻿@model List<ResultGalleryDto>
+<section class="gallery-area fix" data-aos="fade-up" data-aos-duration="1000" style="background:#f4f5f9; padding:100px 0;">
+    <div class="container">
+        <div class="row justify-content-center mb-60" style="margin-bottom:60px;">
+            <div class="col-lg-7 text-center">
+                <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                    <i class="fal fa-images"></i> Galeri
+                </span>
+                <h2 style="font-size:34px; font-weight:700; color:#28314b; line-height:1.35; margin-bottom:16px;">Çalışmalarımızdan Kareler</h2>
+                <p style="color:#6b7280; font-size:15px; line-height:1.8;">Müşterilerimize sunduğumuz hizmetlerden ve projelerden bir seçki.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row portfolio-active g-3">
+            @foreach (var item in Model.Take(6))
+            {
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <a href="/Default/Index/" class="gallery-card-link" style="display:block; text-decoration:none;">
+                        <figure class="gallery-image" style="position:relative; margin:0; border-radius:18px; overflow:hidden; box-shadow:0 8px 25px rgba(0,0,0,0.08); height:350px;">
+                            <img src="@item.ImageUrl" alt="@item.Title" class="img gallery-img"
+                                 style="width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease;">
+
+                            <div class="gallery-overlay" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,25,45,0) 40%, rgba(20,25,45,0.85) 100%); opacity:0; transition:opacity .35s ease;"></div>
+
+                            <div class="gallery-zoom-icon" style="position:absolute; top:20px; right:20px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,0.15); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(-10px); transition:all .35s ease; border:1px solid rgba(255,255,255,0.3);">
+                                <i class="fal fa-search-plus" style="color:#fff; font-size:16px;"></i>
+                            </div>
+
+                            <figcaption style="position:absolute; bottom:0; left:0; right:0; padding:28px 24px; transform:translateY(8px); transition:transform .35s ease;">
+                                <span style="display:inline-block; background:#ff5e14; color:#fff; padding:4px 14px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.3px; margin-bottom:10px;">
+                                    SİGORTA
+                                </span>
+                                <h4 style="color:#fff; font-size:19px; font-weight:700; margin:0; text-shadow:0 2px 10px rgba(0,0,0,0.3);">@item.Title</h4>
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .gallery-card-link:hover .gallery-img {
+        transform: scale(1.08);
+    }
+
+    .gallery-card-link:hover .gallery-overlay {
+        opacity: 1;
+    }
+
+    .gallery-card-link:hover .gallery-zoom-icon {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .gallery-card-link:hover figcaption {
+        transform: translateY(0);
+    }
+</style>

@@ -1,0 +1,68 @@
+﻿@model List<ResultPricingPlanDto>
+
+<section id="pricing" class="pricing-area pt-70 pb-60 fix p-relative" style="background:#f9fafc;">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="section-title center-align pr-60" data-aos="fade-up" data-aos-duration="1000">
+                    <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                        <i class="fal fa-tag"></i> Fiyatlandırma
+                    </span>
+                    <h2 style="font-size:34px; font-weight:700; color:#28314b; line-height:1.35; margin-bottom:20px;">
+                        Esnek <br>Fiyatlandırma Planlarımız
+                    </h2>
+                    <p class="pt-30" data-aos="fade-up" data-aos-duration="1200" style="color:#6b7280; font-size:15px; line-height:1.8; margin-bottom:16px;">
+                        Size ve ailenize en uygun teminatları sunan, ihtiyaçlarınıza göre şekillenen paketlerle sigortacılığı kolaylaştırıyoruz.
+                    </p>
+                    <p data-aos="fade-up" data-aos-duration="1400" style="color:#6b7280; font-size:15px; line-height:1.8;">
+                        Şeffaf fiyatlandırma politikamızla, hiçbir gizli ücret olmadan tam olarak neye ödeme yaptığınızı bilirsiniz.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="row">
+                    @foreach (var plan in Model)
+                    {
+                        <div class="col-lg-6 col-md-6">
+                            <div class="pricing-box pricing-box2 mb-60" data-aos="fade-left" data-aos-duration="1000"
+                                 style="background:#fff; border-radius:20px; padding:45px 30px; box-shadow:0 5px 25px rgba(0,0,0,0.06); transition:transform .3s ease, box-shadow .3s ease;"
+                                 onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 15px 35px rgba(0,0,0,0.1)';"
+                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 25px rgba(0,0,0,0.06)';">
+                                <div class="pricing-head" style="text-align:center; margin-bottom:10px;">
+                                    <h3 style="color:#28314b; font-size:20px; font-weight:700; margin-bottom:16px;">@plan.Title</h3>
+                                    <div class="price-count">
+                                        <h2 style="color:#28314b; font-size:36px; font-weight:800; margin:0;">
+                                            ₺@plan.Price <strong style="font-size:14px; font-weight:500; color:#8891ac;">/Ay</strong>
+                                        </h2>
+                                    </div>
+                                    <hr style="border-color:#f4f5f9; margin:24px 0;">
+                                </div>
+                                <div class="pricing-body mt-20 mb-30 text-left">
+                                    <ul style="list-style:none; padding:0; margin:0;">
+                                        @foreach (var item in plan.PricingPlanItems)
+                                        {
+                                            <li style="display:flex; align-items:center; gap:12px; color:#6b7280; font-size:14.5px; margin-bottom:16px;">
+                                                <span style="display:flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:rgba(255,94,20,0.1); flex-shrink:0;">
+                                                    <i class="fal fa-check" style="color:#ff5e14; font-size:11px;"></i>
+                                                </span>
+                                                @item.PlanItem
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="pricing-btn" style="text-align:center;">
+                                    <a href="/Default/Contact" class="btn ss-btn"
+                                       style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; background:#f4f5f9; color:#28314b; border-radius:10px; font-weight:700; font-size:14px; text-decoration:none; transition:all .25s ease;"
+                                       onmouseover="this.style.background='#28314b'; this.style.color='#fff';" onmouseout="this.style.background='#f4f5f9'; this.style.color='#28314b';">
+                                        Şimdi Katıl
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @await Component.InvokeAsync("DefaultFeaturePricing")
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

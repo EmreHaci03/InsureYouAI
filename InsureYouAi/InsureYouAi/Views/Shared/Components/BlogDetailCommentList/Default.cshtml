@@ -1,0 +1,22 @@
+﻿@model List<ResultCommentDto>
+<div class="comment__wrap pb-45">
+    <div class="comment__wrap-title">
+        <h5>Yorumlar</h5>
+    </div>
+    @foreach(var item in Model)
+    {
+         <div class="single__comment mb-35">
+        <div class="comments-avatar">
+            <img src="@item.AppUser.Substring(0,1)" alt="">
+        </div>
+        <div class="comment-text">
+            <div class="avatar-name mb-15">
+                <h6>@item.AppUser</h6>
+                <span>@item.CommentDate.ToString("dd MMM yyyy")</span>
+            </div>
+            <p>@item.CommentDetail.</p>
+            <a href="" class="comment-reply mt-15"><i class="fas fa-reply"></i> Cevapla</a>
+        </div>
+    </div>
+    }
+</div>

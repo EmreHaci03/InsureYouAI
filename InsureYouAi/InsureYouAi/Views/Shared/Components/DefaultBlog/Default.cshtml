@@ -1,0 +1,77 @@
+﻿@model List<ResultArticleDto>
+<section id="blog" class="blog-area p-relative fix pt-90 pb-90" style="background:#f9fafc;">
+    <div class="container">
+        <div class="row align-items-center mb-50">
+            <div class="col-lg-6 col-md-6">
+                <div class="section-title center-align" data-aos="fade-up" data-aos-duration="1000">
+                    <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                        <i class="fal fa-newspaper"></i> Blog
+                    </span>
+                    <h2 style="font-size:32px; font-weight:700; color:#28314b; margin:0;">
+                        Son Haberleri Okuyun
+                    </h2>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 text-right d-none d-lg-block">
+                <a href="/Blog/BlogList/" class="btn ss-btn" data-aos="fade-up" data-aos-duration="1000"
+                   style="display:inline-flex; align-items:center; gap:8px; padding:13px 28px; background:#28314b; color:#fff; border-radius:10px; font-weight:600; text-decoration:none; transition:background .25s ease;"
+                   onmouseover="this.style.background='#ff5e14';" onmouseout="this.style.background='#28314b';">
+                    Daha Fazla Haber <i class="fal fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row g-4" data-aos="fade-up" data-aos-duration="1400">
+            @foreach (var item in Model)
+            {
+                var plainText = System.Text.RegularExpressions.Regex.Replace(item.Content, "<.*?>", " ").Trim();
+                var summary = plainText.Length > 120 ? plainText.Substring(0, 120) + "..." : plainText;
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-post2 blog-card" data-animation="fadeInUp" data-delay=".4s"
+                         style="background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 5px 25px rgba(0,0,0,0.06); transition:transform .3s ease, box-shadow .3s ease; height:100%;"
+                         onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.1)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 25px rgba(0,0,0,0.06)';">
+                        <div class="blog-thumb2" style="overflow:hidden; height:220px; position:relative;">
+                            <a href="/Default/Article/@item.ArticleId">
+                                <img src="@item.CoverImageUrl" alt="@item.Title" style="width:100%; height:100%; object-fit:cover; transition:transform .5s ease;" class="blog-thumb-img">
+                            </a>
+                            <span style="position:absolute; top:16px; left:16px; background:#ff5e14; color:#fff; padding:5px 14px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.3px;">
+                                SİGORTA
+                            </span>
+                        </div>
+                        <div class="blog-content2" style="padding:28px 26px 30px;">
+                            <div class="b-meta" style="margin-bottom:14px;">
+                                <div class="meta-info">
+                                    <ul style="display:flex; gap:16px; list-style:none; padding:0; margin:0;">
+                                        <li style="color:#8891ac; font-size:13px; display:flex; align-items:center; gap:5px;">
+                                            <i class="fal fa-user" style="color:#ff5e14;"></i> @item.User
+                                        </li>
+                                        <li style="color:#8891ac; font-size:13px; display:flex; align-items:center; gap:5px;">
+                                            <i class="fal fa-calendar-alt" style="color:#ff5e14;"></i> @item.CreatedDate.ToString("dd MMMM yyyy")
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <h4 style="font-size:18px; margin-bottom:12px; line-height:1.4;">
+                                <a href="/Default/Article/@item.ArticleId" style="color:#28314b; font-weight:700; text-decoration:none; transition:color .2s;"
+                                   onmouseover="this.style.color='#ff5e14';" onmouseout="this.style.color='#28314b';">
+                                    @item.Title
+                                </a>
+                            </h4>
+                            <p style="color:#6b7280; font-size:14px; line-height:1.75; margin-bottom:18px;">@summary</p>
+                            <a href="/Default/Article/@item.ArticleId" style="display:inline-flex; align-items:center; gap:6px; color:#ff5e14; font-weight:600; font-size:13.5px; text-decoration:none;">
+                                Devamını Oku <i class="fal fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .blog-card:hover .blog-thumb-img {
+        transform: scale(1.08);
+    }
+</style>

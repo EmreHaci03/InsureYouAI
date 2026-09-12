@@ -1,0 +1,167 @@
+﻿@model List<ResultMessageReplyDto>
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    string[] gradients = new[]
+    {
+        "linear-gradient(135deg,#6366f1,#8b5cf6)",
+        "linear-gradient(135deg,#06b6d4,#3b82f6)",
+        "linear-gradient(135deg,#f59e0b,#ef4444)",
+        "linear-gradient(135deg,#10b981,#059669)",
+        "linear-gradient(135deg,#ec4899,#f43f5e)",
+        "linear-gradient(135deg,#8b5cf6,#6366f1)"
+    };
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-reply-fill me-1"></i>Yanıt Geçmişi</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="MessageList">Mesajlar</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Yanıt Geçmişi</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-4 gap-3">
+    <div>
+        <h4 class="fw-bold mb-1">Yanıt Geçmişi <span class="badge rounded-pill bg-light text-dark ms-1">@(Model?.Count ?? 0)</span></h4>
+        <p class="text-muted mb-0 small">Gönderilen ve oluşturulan AI/manuel yanıtları görüntüleyin</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <div class="position-relative">
+            <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
+            <input class="form-control ps-5 rounded-pill border-0 shadow-sm" type="text" placeholder="Gönderen ara..." id="searchInput" style="min-width:260px;">
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="d-flex flex-column gap-3" id="replyList">
+        @{
+            int i = 0;
+        }
+        @foreach (var item in Model.OrderByDescending(x => x.ReplyDate))
+        {
+            var gradient = gradients[i % gradients.Length];
+            i++;
+            var safeName = item.Message ?? "Bilinmiyor";
+            var initial = string.IsNullOrWhiteSpace(safeName) ? "?" : safeName.Trim()[0].ToString().ToUpper();
+            var searchKey = safeName.ToLower();
+            var preview = (item.ReplyDetail ?? "").Length > 140 ? item.ReplyDetail.Substring(0, 140) + "…" : item.ReplyDetail;
+
+            <a asp-action="MessageReplyDetail" asp-route-id="@item.MessageReplyId" class="text-decoration-none">
+                <div class="card border-0 shadow-sm reply-card position-relative overflow-hidden" data-name="@searchKey">
+                    @if (item.IsSentSuccessfully)
+                    {
+                        <div class="position-absolute top-0 start-0" style="width:5px; height:100%; background:#28a745;"></div>
+                    }
+                    else
+                    {
+                        <div class="position-absolute top-0 start-0" style="width:5px; height:100%; background:#dc3545;"></div>
+                    }
+
+                    <div class="card-body py-3 px-4">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 fw-bold text-white"
+                                 style="width:46px; height:46px; background:@gradient; font-size:16px;">
+                                @initial
+                            </div>
+
+                            <div class="flex-grow-1" style="min-width:0;">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                                    <span class="fw-semibold" style="color:#28314b; font-size:15px;">@safeName</span>
+                                    <span class="text-muted small d-flex align-items-center gap-1">
+                                        <i class="bi bi-clock"></i>@item.ReplyDate.ToString("dd MMM yyyy, HH:mm")
+                                    </span>
+                                </div>
+
+                                <div class="bg-light rounded-3 p-3 mb-2" style="border-left:3px solid #6366f1;">
+                                    <i class="bi bi-quote text-muted"></i>
+                                    <p class="mb-0 small text-body" style="line-height:1.6;">@preview</p>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (item.IsSentSuccessfully)
+                                        {
+                                            <span class="badge rounded-pill" style="background:#eafaf1; color:#28a745; font-size:11px; font-weight:700;">
+                                                <i class="bi bi-check-circle-fill me-1"></i>Gönderildi
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge rounded-pill" style="background:#fdeaea; color:#dc3545; font-size:11px; font-weight:700;">
+                                                <i class="bi bi-x-circle-fill me-1"></i>Gönderilemedi
+                                            </span>
+                                        }
+                                        <span class="badge rounded-pill bg-light text-dark" style="font-size:11px; font-weight:600;">
+                                            <i class="bi bi-stars me-1" style="color:#8b5cf6;"></i>AI Yanıtı
+                                        </span>
+                                    </div>
+                                    <span class="small fw-semibold" style="color:#6366f1;">
+                                        Detayları Gör <i class="bi bi-arrow-right ms-1"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width:72px; height:72px;">
+                <i class="bi bi-reply fs-2 text-muted"></i>
+            </div>
+            <h6 class="fw-semibold">Henüz yanıt oluşturulmamış</h6>
+            <p class="text-muted small mb-0">AI ile oluşturulan yanıtlar burada listelenecek</p>
+        </div>
+    </div>
+}
+
+<style>
+    .reply-card {
+        transition: all 0.2s ease;
+        border-radius: 16px;
+    }
+
+        .reply-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                var term = this.value.toLowerCase();
+                document.querySelectorAll('.reply-card').forEach(function (card) {
+                    card.style.display = card.dataset.name.includes(term) ? '' : 'none';
+                });
+            });
+        }
+    });
+</script>

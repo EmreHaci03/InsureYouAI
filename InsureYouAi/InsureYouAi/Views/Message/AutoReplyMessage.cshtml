@@ -1,0 +1,125 @@
+﻿@model ResultMessageDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    var replyText = ViewBag.ReplyText as string;
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-robot me-1"></i>AI ile Otomatik Yanıt</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="MessageList">Mesajlar</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">AI Yanıtı</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row g-4">
+    <!-- Sol: Orijinal Mesaj -->
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:38px; height:38px; background:rgba(99,102,241,0.1);">
+                        <i class="bi bi-envelope-open-fill" style="color:#6366f1;"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Gelen Mesaj</h6>
+                </div>
+
+                <div class="mb-3">
+                    <span class="text-muted small">Gönderen</span>
+                    <p class="fw-semibold mb-0">@Model.NameSurname</p>
+                </div>
+                <div class="mb-3">
+                    <span class="text-muted small">E-posta</span>
+                    <p class="fw-semibold mb-0">@Model.Email</p>
+                </div>
+                <div class="mb-3">
+                    <span class="text-muted small">Konu</span>
+                    <p class="fw-semibold mb-0">@Model.Subject</p>
+                </div>
+                <div class="mb-3">
+                    <span class="text-muted small">Tarih</span>
+                    <p class="fw-semibold mb-0">@Model.SendDate.ToString("dd MMM yyyy, HH:mm")</p>
+                </div>
+
+                <hr>
+
+                <div class="bg-light rounded-3 p-3" style="border-left:3px solid #6366f1;">
+                    <p class="mb-0 small text-body" style="line-height:1.7;">@Model.MessageDetail</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sağ: AI Yanıtı -->
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:38px; height:38px; background:rgba(139,92,246,0.1);">
+                        <i class="bi bi-stars" style="color:#8b5cf6;"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Claude Tarafından Önerilen Yanıt</h6>
+                    <span class="badge rounded-pill bg-light text-dark ms-auto">
+                        <i class="bi bi-cpu me-1" style="color:#8b5cf6;"></i>Claude AI
+                    </span>
+                </div>
+
+                @if (string.IsNullOrWhiteSpace(replyText))
+                {
+                    <div class="text-center py-5">
+                        <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width:64px; height:64px;">
+                            <i class="bi bi-exclamation-circle fs-3 text-muted"></i>
+                        </div>
+                        <p class="text-muted small mb-0">Yanıt oluşturulamadı. Lütfen tekrar deneyin.</p>
+                        <a asp-action="AutoReplyMessage" asp-route-id="@Model.MessageId" class="btn btn-sm btn-outline-secondary rounded-pill px-4 mt-3">
+                            <i class="bi bi-arrow-clockwise me-1"></i>Tekrar Dene
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <form asp-action="AutoReplyMessage" method="post">
+                        <input type="hidden" name="id" value="@Model.MessageId" />
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Yanıt Metni (gönderilmeden önce düzenleyebilirsiniz)</label>
+                            <textarea name="replyText" rows="12" class="form-control rounded-3" style="font-size:14px; line-height:1.7;">@replyText</textarea>
+                        </div>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <i class="bi bi-send-fill me-1"></i>Yanıtı Gönder
+                            </button>
+                            <a asp-action="AutoReplyMessage" asp-route-id="@Model.MessageId" class="btn btn-outline-secondary rounded-pill px-4">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Yeniden Oluştur
+                            </a>
+                            <a asp-action="MessageList" class="btn btn-light rounded-pill px-4 ms-auto">
+                                Vazgeç
+                            </a>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,235 @@
+﻿@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "AI ile Sohbet";
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-robot me-1"></i>AI Sohbet</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">AI ile Sohbet</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="card border-0 shadow-sm" style="border-radius:18px; overflow:hidden;">
+    <div class="card-body p-0">
+
+        <div class="d-flex align-items-center gap-2 p-3 border-bottom">
+            <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                 style="width:38px; height:38px; background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+                <i class="bi bi-robot text-white"></i>
+            </div>
+            <div>
+                <div class="fw-semibold" style="font-size:14px;">AI Asistan</div>
+                <div class="small text-muted d-flex align-items-center gap-1">
+                    <span id="connectionDot" style="width:7px; height:7px; border-radius:50%; background:#9ca3af; display:inline-block;"></span>
+                    <span id="connectionStatus">Bağlanıyor...</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="messagesList" class="p-4" style="height:480px; overflow-y:auto; background:#f9fafb;"></div>
+
+        <div id="errorBox" class="alert alert-danger m-3 mb-0" style="display:none;"></div>
+
+        <div class="p-3 border-top bg-white">
+            <form id="chatForm" class="d-flex gap-2">
+                <input type="text" id="messageInput" class="form-control rounded-pill px-3"
+                       placeholder="Bir şeyler yazın..." autocomplete="off" disabled>
+                <button type="submit" id="sendBtn" class="btn btn-primary rounded-circle flex-shrink-0"
+                        style="width:44px; height:44px;" disabled>
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .chat-bubble {
+        max-width: 75%;
+        padding: 10px 15px;
+        border-radius: 16px;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .chat-bubble.user {
+        background: linear-gradient(135deg,#6366f1,#8b5cf6);
+        color: #fff;
+        border-bottom-right-radius: 4px;
+    }
+
+    .chat-bubble.ai {
+        background: #fff;
+        color: #28314b;
+        border: 1px solid #eceef4;
+        border-bottom-left-radius: 4px;
+    }
+
+    .chat-row {
+        display: flex;
+        margin-bottom: 14px;
+    }
+
+    .chat-row.user {
+        justify-content: flex-end;
+    }
+
+    .chat-row.ai {
+        justify-content: flex-start;
+    }
+
+    .typing-dots span {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #9ca3af;
+        margin: 0 2px;
+        animation: typingBounce 1.2s infinite ease-in-out;
+    }
+
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @@keyframes typingBounce {
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+        30% { transform: translateY(-4px); opacity: 1; }
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
+<script>
+    const messagesList = document.getElementById('messagesList');
+    const chatForm = document.getElementById('chatForm');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const errorBox = document.getElementById('errorBox');
+    const connectionDot = document.getElementById('connectionDot');
+    const connectionStatus = document.getElementById('connectionStatus');
+
+    let currentAiBubble = null;
+
+    function scrollToBottom() {
+        messagesList.scrollTop = messagesList.scrollHeight;
+    }
+
+    function addUserMessage(text) {
+        const row = document.createElement('div');
+        row.className = 'chat-row user';
+        row.innerHTML = `<div class="chat-bubble user"></div>`;
+        row.querySelector('.chat-bubble').textContent = text;
+        messagesList.appendChild(row);
+        scrollToBottom();
+    }
+
+    function startAiBubble() {
+        const row = document.createElement('div');
+        row.className = 'chat-row ai';
+        row.innerHTML = `<div class="chat-bubble ai"><span class="typing-dots"><span></span><span></span><span></span></span></div>`;
+        messagesList.appendChild(row);
+        scrollToBottom();
+        currentAiBubble = row.querySelector('.chat-bubble');
+        currentAiBubble.dataset.started = "false";
+    }
+
+    function appendToAiBubble(chunk) {
+        if (!currentAiBubble) startAiBubble();
+        if (currentAiBubble.dataset.started === "false") {
+            currentAiBubble.textContent = '';
+            currentAiBubble.dataset.started = "true";
+        }
+        currentAiBubble.textContent += chunk;
+        scrollToBottom();
+    }
+
+    function finishAiBubble() {
+        currentAiBubble = null;
+    }
+
+    function showError(message) {
+        errorBox.textContent = 'Hata: ' + message;
+        errorBox.style.display = 'block';
+        setTimeout(() => { errorBox.style.display = 'none'; }, 6000);
+    }
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .withAutomaticReconnect()
+        .build();
+
+    connection.on("ReceiveUserEcho", function (message) {
+        addUserMessage(message);
+        startAiBubble();
+    });
+
+    connection.on("ReceiveChunk", function (chunk) {
+        appendToAiBubble(chunk);
+    });
+
+    connection.on("StreamCompleted", function () {
+        finishAiBubble();
+    });
+
+    connection.on("ReceiveError", function (errorMessage) {
+        showError(errorMessage);
+        finishAiBubble();
+    });
+
+    async function startConnection() {
+        try {
+            await connection.start();
+            connectionDot.style.background = '#10b981';
+            connectionStatus.textContent = 'Çevrimiçi';
+            messageInput.disabled = false;
+            sendBtn.disabled = false;
+        } catch (err) {
+            connectionDot.style.background = '#ef4444';
+            connectionStatus.textContent = 'Bağlantı kurulamadı';
+            setTimeout(startConnection, 3000);
+        }
+    }
+
+    connection.onreconnecting(() => {
+        connectionDot.style.background = '#f59e0b';
+        connectionStatus.textContent = 'Yeniden bağlanıyor...';
+        messageInput.disabled = true;
+        sendBtn.disabled = true;
+    });
+
+    connection.onreconnected(() => {
+        connectionDot.style.background = '#10b981';
+        connectionStatus.textContent = 'Çevrimiçi';
+        messageInput.disabled = false;
+        sendBtn.disabled = false;
+    });
+
+    connection.onclose(() => {
+        connectionDot.style.background = '#ef4444';
+        connectionStatus.textContent = 'Bağlantı kesildi';
+        messageInput.disabled = true;
+        sendBtn.disabled = true;
+    });
+
+    startConnection();
+
+    chatForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const text = messageInput.value.trim();
+        if (!text) return;
+
+        messageInput.value = '';
+        connection.invoke("SendMessage", text).catch(err => showError(err.message));
+    });
+</script>

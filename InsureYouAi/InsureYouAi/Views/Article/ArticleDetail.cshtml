@@ -1,0 +1,65 @@
+﻿@model GetArticleByIdDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-newspaper me-1"></i>Makaleler</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="ArticleList">Makaleler</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Detay</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-9">
+        <div class="card border-0 shadow-sm overflow-hidden">
+            @if (!string.IsNullOrEmpty(Model.MainCoverImageUrl))
+            {
+                <img src="@Model.MainCoverImageUrl" class="w-100" style="height:320px; object-fit:cover;" alt="@Model.Title" />
+            }
+            else if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+            {
+                <img src="@Model.CoverImageUrl" class="w-100" style="height:320px; object-fit:cover;" alt="@Model.Title" />
+            }
+
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+                    <span class="badge rounded-pill" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff;">
+                        @(Model.Category ?? "Kategorisiz")
+                    </span>
+                    <span class="text-muted small d-flex align-items-center gap-1">
+                        <i class="bi bi-calendar3"></i>@Model.CreatedDate.ToString("dd MMMM yyyy")
+                    </span>
+                </div>
+
+                <h2 class="fw-bold mb-4">@Model.Title</h2>
+
+                <div style="line-height:1.9; font-size:1.05rem;">
+                    @Html.Raw(Model.Content)
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="ArticleList" class="btn btn-light rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i>Listeye Dön
+                    </a>
+                    <a asp-action="UpdateArticle" asp-route-id="@Model.ArticleId" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                        <i class="bi bi-pencil-fill me-1"></i>Düzenle
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

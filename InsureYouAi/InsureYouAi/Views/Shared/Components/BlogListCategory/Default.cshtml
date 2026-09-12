@@ -1,0 +1,19 @@
+﻿@model List<CategoryArticleCountViewModel>
+<section id="categories-1" class="widget widget_categories" style="background:#fff; border-radius:14px; padding:30px; box-shadow:0 5px 25px rgba(0,0,0,0.06);">
+    <h2 class="widget-title" style="font-size:20px; font-weight:700; color:#28314b; margin-bottom:24px; padding-bottom:14px; border-bottom:2px solid #f4f5f9; position:relative;">
+        Kategoriler
+        <span style="position:absolute; bottom:-2px; left:0; width:45px; height:2px; background:#ff5e14;"></span>
+    </h2>
+    <ul style="list-style:none; padding:0; margin:0;">
+        @foreach (var item in Model)
+        {
+            <li style="margin-bottom:6px;">
+                <a href="/Blog/GetBlogByCategory/@item.CategoryId" style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-radius:10px; color:#28314b; text-decoration:none; font-size:14.5px; font-weight:500; transition:all .2s ease;"
+                   onmouseover="this.style.background='#f4f5f9'; this.style.paddingLeft='22px';" onmouseout="this.style.background='transparent'; this.style.paddingLeft='16px';">
+                    <span><i class="fal fa-angle-right" style="color:#ff5e14; margin-right:8px;"></i>@item.CategoryName</span>
+                    <span style="background:#f4f5f9; color:#8891ac; font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px;">@item.ArticleCount</span>
+                </a>
+            </li>
+        }
+    </ul>
+</section>

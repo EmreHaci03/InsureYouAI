@@ -1,0 +1,40 @@
+﻿
+
+@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zxx">
+@await Component.InvokeAsync("LayoutHead")
+<body>
+    @await Component.InvokeAsync("LayoutHeader")
+    @await Component.InvokeAsync("LayoutMobileMenu")
+
+    <main>
+        @await Component.InvokeAsync("BlogListBreadCrumb")
+        <!-- inner-blog -->
+        <section class="inner-blog pt-120 pb-120">
+            <div class="container">
+                <div class="row">
+                    @await Component.InvokeAsync("BlogList")
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        <aside class="sidebar-widget">
+                            @await Html.PartialAsync("/Views/Blog/GetBlog.cshtml")
+                            @await Component.InvokeAsync("BlogListSocialMedia")
+                            @await Component.InvokeAsync("BlogListCategory")
+                            @await Component.InvokeAsync("BlogListRecentPost")
+                            @await Component.InvokeAsync("BlogListTagCloud")
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- inner-blog-end -->
+        @await Component.InvokeAsync("DefaultNewsletter")
+    </main>
+    <!-- main-area-end -->
+    @await Component.InvokeAsync("LayoutFooter")
+    @await Component.InvokeAsync("LayoutScript")
+</body>
+</html>
+

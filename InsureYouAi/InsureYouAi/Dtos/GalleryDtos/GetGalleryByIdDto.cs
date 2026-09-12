@@ -1,0 +1,9 @@
+﻿namespace InsureYouAi.Dtos.GalleryDtos
+{
+    public class GetGalleryByIdDto
+    {
+        public int GalleryId { get; set; }
+        public string Title { get; set; }
+        public string ImageUrl { get; set; }
+    }
+}

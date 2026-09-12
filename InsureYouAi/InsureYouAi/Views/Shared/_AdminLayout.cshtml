@@ -1,0 +1,29 @@
+﻿<!doctype html>
+<html lang="en" class="semi-dark">
+
+@await Component.InvokeAsync("AdminLayoutHead")
+
+<body>
+
+
+
+    <div class="wrapper">
+
+        @await Component.InvokeAsync("AdminLayoutHeader")
+        @await Component.InvokeAsync("AdminLayoutSideBar")
+        <main class="page-content">
+            @await RenderSectionAsync("BreadCrumb", required: false)
+           @*  @await Component.InvokeAsync("AdminLayoutBreadCrumb") *@
+          @RenderBody()
+
+        </main>
+        @await Component.InvokeAsync("AdminLayoutSwitcher")
+
+    </div>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Component.InvokeAsync("AdminLayoutScript")
+
+
+</body>
+
+</html>

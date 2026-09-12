@@ -1,0 +1,510 @@
+﻿@using InsureYouAi.Entities.Enums
+@model GetCommentByIdDto
+
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+
+    var safeUser = string.IsNullOrWhiteSpace(Model.AppUser)
+        ? "Anonim"
+        : Model.AppUser;
+
+    var initial = string.IsNullOrWhiteSpace(safeUser)
+        ? "?"
+        : safeUser.Trim()[0].ToString().ToUpper();
+
+    var statusText = Model.CommentStatusType switch
+    {
+        var s when s == CommentStatusType.Approved.ToString() => "Onaylandı",
+        var s when s == CommentStatusType.Pending.ToString() => "Bekliyor",
+        var s when s == CommentStatusType.Rejected.ToString() => "Reddedildi",
+        _ => "Bilinmiyor"
+    };
+
+    var statusColor = Model.CommentStatusType switch
+    {
+        var s when s == CommentStatusType.Approved.ToString() => "#28a745",
+        var s when s == CommentStatusType.Pending.ToString() => "#f59e0b",
+        var s when s == CommentStatusType.Rejected.ToString() => "#dc3545",
+        _ => "#8891ac"
+    };
+
+    var statusBg = Model.CommentStatusType switch
+    {
+        var s when s == CommentStatusType.Approved.ToString() => "#eafaf1",
+        var s when s == CommentStatusType.Pending.ToString() => "#fff8ec",
+        var s when s == CommentStatusType.Rejected.ToString() => "#fdeaea",
+        _ => "#f4f5f9"
+    };
+
+    var statusIcon = Model.CommentStatusType switch
+    {
+        var s when s == CommentStatusType.Approved.ToString() => "bi-check-circle-fill",
+        var s when s == CommentStatusType.Pending.ToString() => "bi-hourglass-split",
+        var s when s == CommentStatusType.Rejected.ToString() => "bi-x-circle-fill",
+        _ => "bi-question-circle-fill"
+    };
+}
+
+@section BreadCrumb
+{
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+
+        <div class="breadcrumb-title pe-3">
+            <i class="bi bi-chat-square-text-fill me-1"></i>
+            Yorumlar
+        </div>
+
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;">
+                            <i class="bx bx-home-alt"></i>
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item">
+                        <a asp-action="CommentList">
+                            Yorumlar
+                        </a>
+                    </li>
+
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Yorum Detayı
+                    </li>
+
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+}
+
+<div class="d-flex align-items-center justify-content-between mb-4">
+
+    <div>
+        <h4 class="fw-bold mb-1">
+            Yorum Detayı
+        </h4>
+
+        <p class="text-muted mb-0 small">
+            Kullanıcı yorumunun detaylarını görüntüleyin
+        </p>
+    </div>
+
+    <a asp-action="CommentList"
+       class="btn btn-light rounded-pill px-4 shadow-sm">
+
+        <i class="bi bi-arrow-left me-1"></i>
+        Yorumlara Dön
+
+    </a>
+
+</div>
+
+
+<div class="row g-4">
+
+    <!-- SOL TARAF -->
+    <div class="col-xl-8">
+
+        <div class="card border-0 shadow-sm comment-detail-card">
+
+            <div class="card-body p-4">
+
+                <!-- Kullanıcı -->
+                <div class="d-flex align-items-center justify-content-between mb-4">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="user-avatar">
+                            @initial
+                        </div>
+
+                        <div>
+                            <h5 class="fw-bold mb-1">
+                                @safeUser
+                            </h5>
+
+                            <div class="text-muted small">
+                                <i class="bi bi-calendar3 me-1"></i>
+
+                                @Model.CommentDate.ToString("dd MMMM yyyy, HH:mm")
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Durum -->
+                    <span class="status-badge"
+                          style="background:@statusBg; color:@statusColor;">
+
+                        <i class="bi @statusIcon me-1"></i>
+
+                        @statusText
+
+                    </span>
+
+                </div>
+
+
+                <!-- Makale -->
+                <div class="article-box mb-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="article-icon">
+                            <i class="bi bi-file-earmark-text-fill"></i>
+                        </div>
+
+                        <div>
+
+                            <span class="text-muted small">
+                                Yorum yapılan makale
+                            </span>
+
+                            <h6 class="fw-semibold mb-0">
+                                @Model.Article
+                            </h6>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Yorum -->
+                <div class="comment-section">
+
+                    <div class="d-flex align-items-center gap-2 mb-3">
+
+                        <i class="bi bi-chat-square-quote-fill text-primary"></i>
+
+                        <h6 class="fw-bold mb-0">
+                            Kullanıcı Yorumu
+                        </h6>
+
+                    </div>
+
+                    <div class="comment-content">
+
+                        <span class="quote-icon">
+                            <i class="bi bi-quote"></i>
+                        </span>
+
+                        <p class="mb-0">
+                            @Model.CommentDetail
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SAĞ TARAF -->
+    <div class="col-xl-4">
+
+        <!-- Durum Kartı -->
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-body p-4">
+
+                <h6 class="fw-bold mb-3">
+                    <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                    Yorum Bilgileri
+                </h6>
+
+                <div class="info-row">
+
+                    <span class="text-muted">
+                        Yorum ID
+                    </span>
+
+                    <span class="fw-semibold">
+                        #@Model.CommentId
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="text-muted">
+                        Kullanıcı
+                    </span>
+
+                    <span class="fw-semibold text-truncate ms-3"
+                          style="max-width:160px;">
+                        @safeUser
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="text-muted">
+                        Durum
+                    </span>
+
+                    <span class="status-badge"
+                          style="background:@statusBg; color:@statusColor;">
+
+                        <i class="bi @statusIcon me-1"></i>
+                        @statusText
+
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="text-muted">
+                        Tarih
+                    </span>
+
+                    <span class="fw-semibold">
+                        @Model.CommentDate.ToString("dd.MM.yyyy")
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- İşlemler -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body p-4">
+
+                <h6 class="fw-bold mb-3">
+                    <i class="bi bi-gear-fill text-primary me-2"></i>
+                    İşlemler
+                </h6>
+
+
+                @if (Model.CommentStatusType != CommentStatusType.Approved.ToString())
+                {
+                    <form asp-action="ApproveComment"
+                          method="post"
+                          class="mb-2">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.CommentId" />
+
+                        <button type="submit"
+                                class="btn btn-success w-100 rounded-pill">
+
+                            <i class="bi bi-check-circle-fill me-1"></i>
+                            Yorumu Onayla
+
+                        </button>
+
+                    </form>
+                }
+
+
+                <button type="button"
+                        class="btn btn-outline-danger w-100 rounded-pill"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal">
+
+                    <i class="bi bi-trash-fill me-1"></i>
+                    Yorumu Sil
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- DELETE MODAL -->
+
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg"
+             style="border-radius:20px;">
+
+            <div class="modal-body text-center p-4">
+
+                <div class="delete-icon mb-3">
+
+                    <i class="bi bi-trash3-fill"></i>
+
+                </div>
+
+                <h5 class="fw-bold">
+                    Yorumu Sil
+                </h5>
+
+                <p class="text-muted small">
+                    Bu işlem geri alınamaz.
+                    Yorumu silmek istediğinize emin misiniz?
+                </p>
+
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="button"
+                            class="btn btn-light rounded-pill flex-grow-1"
+                            data-bs-dismiss="modal">
+
+                        Vazgeç
+
+                    </button>
+
+                    <form asp-action="DeleteComment"
+                          method="post"
+                          class="flex-grow-1">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.CommentId" />
+
+                        <button type="submit"
+                                class="btn btn-danger rounded-pill w-100">
+
+                            <i class="bi bi-trash3-fill me-1"></i>
+                            Evet, Sil
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    .comment-detail-card {
+        border-radius: 18px;
+    }
+
+    .user-avatar {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg,#6366f1,#8b5cf6);
+        color: white;
+        font-size: 21px;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .article-box {
+        padding: 16px;
+        background: #f7f8fc;
+        border-radius: 12px;
+        border-left: 4px solid #6366f1;
+    }
+
+    .article-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: #ede9fe;
+        color: #6366f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        margin-right: 12px;
+    }
+
+    .comment-section {
+        margin-top: 10px;
+    }
+
+    .comment-content {
+        position: relative;
+        background: #f8f9fa;
+        border-radius: 14px;
+        padding: 28px 25px 25px 48px;
+        border: 1px solid #edf0f5;
+        min-height: 150px;
+    }
+
+    .comment-content p {
+        font-size: 15px;
+        line-height: 1.8;
+        color: #343a40;
+    }
+
+    .quote-icon {
+        position: absolute;
+        left: 16px;
+        top: 18px;
+        color: #6366f1;
+        font-size: 25px;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 0;
+        border-bottom: 1px solid #f0f1f5;
+        font-size: 13px;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .delete-icon {
+        width: 70px;
+        height: 70px;
+        margin: auto;
+        border-radius: 50%;
+        background: #fdeaea;
+        color: #dc3545;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+    }
+
+</style>

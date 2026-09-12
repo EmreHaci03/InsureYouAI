@@ -1,0 +1,207 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zxx">
+@await Component.InvokeAsync("LayoutHead")
+<body>
+    @await Component.InvokeAsync("LayoutHeader")
+    @await Component.InvokeAsync("LayoutMobileMenu")
+    <main>
+
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center" style="
+            background-image: linear-gradient(135deg, rgba(20, 25, 45, 0.85), rgba(255, 94, 20, 0.35)), url('/defaultimages/coverimages/cover0.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            ">
+            <div style="position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,94,20,0.15); filter:blur(10px);"></div>
+            <div style="position:absolute; bottom:-80px; left:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.06);"></div>
+
+            <div class="container" style="position:relative; z-index:2;">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="breadcrumb-wrap text-left">
+                            <div class="breadcrumb-title">
+                                <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.15); color:#ff8c4d; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:18px; border:1px solid rgba(255,94,20,0.3);">
+                                    <i class="fal fa-question-circle"></i> Yardım Merkezi
+                                </span>
+                                <h2 style="color:#fff; font-size:42px; font-weight:700; margin-bottom:15px; letter-spacing:.5px; text-shadow:0 2px 20px rgba(0,0,0,0.3);">Sıkça Sorulan Sorular</h2>
+                                <div class="breadcrumb-wrap">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb" style="background:transparent; padding:0; margin:0; display:flex; gap:8px; align-items:center;">
+                                            <li class="breadcrumb-item">
+                                                <a href="/Default/Index/" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px;">
+                                                    <i class="fal fa-home"></i> Ana Sayfa
+                                                </a>
+                                            </li>
+                                            <li style="color:rgba(255,255,255,0.4); font-size:13px;"><i class="fal fa-chevron-right"></i></li>
+                                            <li class="breadcrumb-item active" aria-current="page" style="color:#ff8c4d; font-weight:600; font-size:15px;">SSS</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <svg style="position:absolute; bottom:-1px; left:0; width:100%; height:60px; z-index:2;" viewBox="0 0 1440 60" preserveAspectRatio="none">
+                <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f4f5f9"></path>
+            </svg>
+        </section>
+        <!-- breadcrumb-area-end -->
+        <!-- faq-area -->
+        <section class="faq-area pt-120 pb-120" style="background:#f4f5f9;">
+            <div class="container">
+                <div class="row justify-content-center mb-60" style="margin-bottom:60px;">
+                    <div class="col-lg-7 text-center">
+                        <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                            <i class="fal fa-comments"></i> Merak Edilenler
+                        </span>
+                        <h2 style="font-size:34px; font-weight:700; color:#28314b; line-height:1.35; margin-bottom:16px;">Aklınıza Takılan Bir Şey mi Var?</h2>
+                        <p style="color:#6b7280; font-size:15px; line-height:1.8;">Sigorta süreçleri hakkında en sık sorulan soruları sizin için derledik. Aradığınızı bulamazsanız bizimle iletişime geçmekten çekinmeyin.</p>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-9">
+                        <div class="accordion" id="faqAccordion">
+
+                            <div class="faq-item" style="background:#fff; border-radius:14px; margin-bottom:16px; box-shadow:0 5px 20px rgba(0,0,0,0.05); overflow:hidden;">
+                                <button class="faq-toggle" data-target="faq1" style="width:100%; text-align:left; padding:22px 28px; background:none; border:none; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:16px; font-weight:600; color:#28314b;">
+                                    <span style="display:flex; align-items:center; gap:14px;">
+                                        <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:10px; background:rgba(255,94,20,0.1); flex-shrink:0;">
+                                            <i class="fal fa-file-contract" style="color:#ff5e14; font-size:15px;"></i>
+                                        </span>
+                                        Sigorta poliçemi nasıl satın alabilirim?
+                                    </span>
+                                    <i class="fal fa-chevron-down faq-icon" style="color:#ff5e14; transition:transform .3s ease;"></i>
+                                </button>
+                                <div class="faq-body" id="faq1" style="max-height:0; overflow:hidden; transition:max-height .35s ease;">
+                                    <div style="padding:0 28px 24px 76px; color:#6b7280; font-size:14.5px; line-height:1.8;">
+                                        Web sitemiz üzerinden ihtiyacınıza uygun sigorta türünü seçip, birkaç dakika içinde online olarak teklif alabilir ve satın alma işleminizi tamamlayabilirsiniz. Ayrıca çağrı merkezimiz veya en yakın acentemiz üzerinden de poliçe oluşturabilirsiniz.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" style="background:#fff; border-radius:14px; margin-bottom:16px; box-shadow:0 5px 20px rgba(0,0,0,0.05); overflow:hidden;">
+                                <button class="faq-toggle" data-target="faq2" style="width:100%; text-align:left; padding:22px 28px; background:none; border:none; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:16px; font-weight:600; color:#28314b;">
+                                    <span style="display:flex; align-items:center; gap:14px;">
+                                        <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:10px; background:rgba(255,94,20,0.1); flex-shrink:0;">
+                                            <i class="fal fa-file-invoice-dollar" style="color:#ff5e14; font-size:15px;"></i>
+                                        </span>
+                                        Hasar durumunda ödeme süreci ne kadar sürer?
+                                    </span>
+                                    <i class="fal fa-chevron-down faq-icon" style="color:#ff5e14; transition:transform .3s ease;"></i>
+                                </button>
+                                <div class="faq-body" id="faq2" style="max-height:0; overflow:hidden; transition:max-height .35s ease;">
+                                    <div style="padding:0 28px 24px 76px; color:#6b7280; font-size:14.5px; line-height:1.8;">
+                                        Hasar bildiriminizin ardından uzman ekibimiz gerekli incelemeleri tamamlar ve eksiksiz belgelerle yapılan başvurularda ödemeler genellikle 5-10 iş günü içerisinde hesabınıza aktarılır. Sürecin durumunu online panelinizden takip edebilirsiniz.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" style="background:#fff; border-radius:14px; margin-bottom:16px; box-shadow:0 5px 20px rgba(0,0,0,0.05); overflow:hidden;">
+                                <button class="faq-toggle" data-target="faq3" style="width:100%; text-align:left; padding:22px 28px; background:none; border:none; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:16px; font-weight:600; color:#28314b;">
+                                    <span style="display:flex; align-items:center; gap:14px;">
+                                        <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:10px; background:rgba(255,94,20,0.1); flex-shrink:0;">
+                                            <i class="fal fa-sync-alt" style="color:#ff5e14; font-size:15px;"></i>
+                                        </span>
+                                        Poliçemi süresi dolmadan iptal edebilir miyim?
+                                    </span>
+                                    <i class="fal fa-chevron-down faq-icon" style="color:#ff5e14; transition:transform .3s ease;"></i>
+                                </button>
+                                <div class="faq-body" id="faq3" style="max-height:0; overflow:hidden; transition:max-height .35s ease;">
+                                    <div style="padding:0 28px 24px 76px; color:#6b7280; font-size:14.5px; line-height:1.8;">
+                                        Evet, poliçenizi dilediğiniz zaman iptal edebilirsiniz. İptal talebiniz sonrası kullanılmayan gün sayısına karşılık gelen prim tutarı, poliçe şartlarına uygun şekilde hesaplanarak tarafınıza iade edilir.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" style="background:#fff; border-radius:14px; margin-bottom:16px; box-shadow:0 5px 20px rgba(0,0,0,0.05); overflow:hidden;">
+                                <button class="faq-toggle" data-target="faq4" style="width:100%; text-align:left; padding:22px 28px; background:none; border:none; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:16px; font-weight:600; color:#28314b;">
+                                    <span style="display:flex; align-items:center; gap:14px;">
+                                        <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:10px; background:rgba(255,94,20,0.1); flex-shrink:0;">
+                                            <i class="fal fa-users" style="color:#ff5e14; font-size:15px;"></i>
+                                        </span>
+                                        Ailem için tek bir poliçe altında sigorta yaptırabilir miyim?
+                                    </span>
+                                    <i class="fal fa-chevron-down faq-icon" style="color:#ff5e14; transition:transform .3s ease;"></i>
+                                </button>
+                                <div class="faq-body" id="faq4" style="max-height:0; overflow:hidden; transition:max-height .35s ease;">
+                                    <div style="padding:0 28px 24px 76px; color:#6b7280; font-size:14.5px; line-height:1.8;">
+                                        Evet, aile paketlerimiz sayesinde tüm aile bireylerinizi tek bir poliçe altında, avantajlı fiyatlarla güvence altına alabilirsiniz. Detaylı bilgi için müşteri temsilcilerimizle iletişime geçebilirsiniz.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" style="background:#fff; border-radius:14px; margin-bottom:16px; box-shadow:0 5px 20px rgba(0,0,0,0.05); overflow:hidden;">
+                                <button class="faq-toggle" data-target="faq5" style="width:100%; text-align:left; padding:22px 28px; background:none; border:none; display:flex; align-items:center; justify-content:space-between; cursor:pointer; font-size:16px; font-weight:600; color:#28314b;">
+                                    <span style="display:flex; align-items:center; gap:14px;">
+                                        <span style="display:flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:10px; background:rgba(255,94,20,0.1); flex-shrink:0;">
+                                            <i class="fal fa-headset" style="color:#ff5e14; font-size:15px;"></i>
+                                        </span>
+                                        7/24 destek hattınız var mı?
+                                    </span>
+                                    <i class="fal fa-chevron-down faq-icon" style="color:#ff5e14; transition:transform .3s ease;"></i>
+                                </button>
+                                <div class="faq-body" id="faq5" style="max-height:0; overflow:hidden; transition:max-height .35s ease;">
+                                    <div style="padding:0 28px 24px 76px; color:#6b7280; font-size:14.5px; line-height:1.8;">
+                                        Evet, müşteri hizmetlerimiz haftanın her günü, günün her saati hizmetinizdedir. Acil durumlarda ve hasar bildirimlerinde 7/24 destek hattımızdan bize ulaşabilirsiniz.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div style="text-align:center; margin-top:50px; background:#28314b; border-radius:20px; padding:45px 30px;">
+                            <h4 style="color:#fff; font-size:22px; font-weight:700; margin-bottom:10px;">Aradığınız cevabı bulamadınız mı?</h4>
+                            <p style="color:rgba(255,255,255,0.65); font-size:14.5px; margin-bottom:24px;">Uzman ekibimiz sorularınızı yanıtlamak için hazır.</p>
+                            <a href="/Default/DefaultMessage/" style="display:inline-flex; align-items:center; gap:8px; padding:14px 32px; background:#ff5e14; color:#fff; border-radius:10px; font-weight:600; font-size:14.5px; text-decoration:none; transition:background .25s ease;"
+                               onmouseover="this.style.background='#fff'; this.style.color='#28314b';" onmouseout="this.style.background='#ff5e14'; this.style.color='#fff';">
+                                Bize Ulaşın <i class="fal fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- faq-area-end -->
+        @await Component.InvokeAsync("DefaultNewsletter")
+    </main>
+    <!-- main-area-end -->
+    @await Component.InvokeAsync("LayoutFooter")
+    @await Component.InvokeAsync("LayoutScript")
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.faq-toggle').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var targetId = this.dataset.target;
+                var body = document.getElementById(targetId);
+                var icon = this.querySelector('.faq-icon');
+                var isOpen = body.style.maxHeight && body.style.maxHeight !== '0px';
+
+                document.querySelectorAll('.faq-body').forEach(function (b) {
+                    b.style.maxHeight = '0px';
+                });
+                document.querySelectorAll('.faq-icon').forEach(function (i) {
+                    i.style.transform = 'rotate(0deg)';
+                });
+
+                if (!isOpen) {
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    });
+</script>

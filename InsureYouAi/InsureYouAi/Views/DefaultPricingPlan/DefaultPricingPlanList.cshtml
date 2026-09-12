@@ -1,0 +1,152 @@
+﻿@model List<ResultPricingPlanDto>
+@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zxx">
+@await Component.InvokeAsync("LayoutHead")
+<body>
+    @await Component.InvokeAsync("LayoutHeader")
+    @await Component.InvokeAsync("LayoutMobileMenu")
+    <main>
+
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center" style="
+            background-image: linear-gradient(135deg, rgba(20, 25, 45, 0.85), rgba(255, 94, 20, 0.35)), url('/defaultimages/coverimages/cover0.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            ">
+            <div style="position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,94,20,0.15); filter:blur(10px);"></div>
+            <div style="position:absolute; bottom:-80px; left:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.06);"></div>
+
+            <div class="container" style="position:relative; z-index:2;">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="breadcrumb-wrap text-left">
+                            <div class="breadcrumb-title">
+                                <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.15); color:#ff8c4d; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:18px; border:1px solid rgba(255,94,20,0.3);">
+                                    <i class="fal fa-tag"></i> Fiyatlandırma
+                                </span>
+                                <h2 style="color:#fff; font-size:42px; font-weight:700; margin-bottom:15px; letter-spacing:.5px; text-shadow:0 2px 20px rgba(0,0,0,0.3);">Fiyat Planlarımız</h2>
+                                <div class="breadcrumb-wrap">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb" style="background:transparent; padding:0; margin:0; display:flex; gap:8px; align-items:center;">
+                                            <li class="breadcrumb-item">
+                                                <a href="/Default/Index/" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px;">
+                                                    <i class="fal fa-home"></i> Ana Sayfa
+                                                </a>
+                                            </li>
+                                            <li style="color:rgba(255,255,255,0.4); font-size:13px;"><i class="fal fa-chevron-right"></i></li>
+                                            <li class="breadcrumb-item active" aria-current="page" style="color:#ff8c4d; font-weight:600; font-size:15px;">Fiyatlandırma</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <svg style="position:absolute; bottom:-1px; left:0; width:100%; height:60px; z-index:2;" viewBox="0 0 1440 60" preserveAspectRatio="none">
+                <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f4f5f9"></path>
+            </svg>
+        </section>
+        <!-- breadcrumb-area-end -->
+        <!-- pricing-list -->
+        <section class="pricing-area pt-120 pb-120" style="background:#f4f5f9;">
+            <div class="container">
+                <div class="row justify-content-center mb-60" style="margin-bottom:60px;">
+                    <div class="col-lg-7 text-center">
+                        <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                            <i class="fal fa-shield-check"></i> Esnek Paketler
+                        </span>
+                        <h2 style="font-size:34px; font-weight:700; color:#28314b; line-height:1.35; margin-bottom:16px;">İhtiyacınıza Uygun Planı Seçin</h2>
+                        <p style="color:#6b7280; font-size:15px; line-height:1.8;">Şeffaf fiyatlandırma politikamızla, hiçbir gizli ücret olmadan tam olarak neye ödeme yaptığınızı bilirsiniz.</p>
+                    </div>
+                </div>
+
+                <div class="row g-4 justify-content-center">
+                    @foreach (var plan in Model)
+                    {
+                        var isFeatured = plan.IsFeature;
+
+                        <div class="col-lg-4 col-md-6">
+                            <div class="pricing-card @(isFeatured ? "featured" : "")" style="
+                                        background:@(isFeatured ? "#28314b" : "#fff");
+                                        border-radius:20px;
+                                        padding:45px 35px;
+                                        position:relative;
+                                        overflow:hidden;
+                                        box-shadow:@(isFeatured ? "0 20px 45px rgba(40,49,75,0.25)" : "0 5px 25px rgba(0,0,0,0.06)");
+                                        transform:@(isFeatured ? "scale(1.04)" : "scale(1)");
+                                        transition:transform .3s ease, box-shadow .3s ease;
+                                        height:100%;
+                                        ">
+
+                                @if (isFeatured)
+                                {
+                                    <span style="position:absolute; top:22px; right:-38px; background:#ff5e14; color:#fff; padding:6px 45px; font-size:12px; font-weight:700; letter-spacing:.5px; transform:rotate(45deg); box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+                                        EN POPÜLER
+                                    </span>
+                                }
+
+                                <div style="text-align:center; margin-bottom:10px;">
+                                    <h3 style="color:@(isFeatured ? "#fff" : "#28314b"); font-size:@(isFeatured ? "22px" : "20px"); font-weight:700; margin-bottom:16px;">@plan.Title</h3>
+                                    <div>
+                                        <h2 style="color:@(isFeatured ? "#fff" : "#28314b"); font-size:@(isFeatured ? "42px" : "36px"); font-weight:800; margin:0;">
+                                            ₺@plan.Price <strong style="font-size:@(isFeatured ? "15px" : "14px"); font-weight:500; color:@(isFeatured ? "rgba(255,255,255,0.7)" : "#8891ac");">/Ay</strong>
+                                        </h2>
+                                    </div>
+                                    <hr style="border-color:@(isFeatured ? "rgba(255,255,255,0.12)" : "#f4f5f9"); margin:24px 0;">
+                                </div>
+
+                                <div style="margin-bottom:30px;">
+                                    <ul style="list-style:none; padding:0; margin:0;">
+                                        @if (plan.PricingPlanItems != null)
+                                        {
+                                            @foreach (var subItem in plan.PricingPlanItems)
+                                            {
+                                                <li style="display:flex; align-items:center; gap:12px; color:@(isFeatured ? "rgba(255,255,255,0.85)" : "#6b7280"); font-size:14.5px; margin-bottom:16px;">
+                                                    <span style="display:flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:@(isFeatured ? "rgba(255,94,20,0.2)" : "rgba(255,94,20,0.1)"); flex-shrink:0;">
+                                                        <i class="fal fa-check" style="color:#ff5e14; font-size:11px;"></i>
+                                                    </span>
+                                                    @subItem.PlanItem
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div style="text-align:center;">
+                                    <a href="/Default/Contact"
+                                       style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:@(isFeatured ? "15px" : "14px"); background:@(isFeatured ? "#ff5e14" : "#f4f5f9"); color:@(isFeatured ? "#fff" : "#28314b"); border-radius:10px; font-weight:700; font-size:14.5px; text-decoration:none; transition:all .25s ease; box-sizing:border-box;">
+                                        Şimdi Katıl
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <!-- pricing-list-end -->
+
+        <style>
+            .pricing-card:not(.featured):hover {
+                transform: translateY(-6px) !important;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+            }
+        </style>
+
+        @await Component.InvokeAsync("DefaultNewsletter")
+    </main>
+    <!-- main-area-end -->
+    @await Component.InvokeAsync("LayoutFooter")
+    @await Component.InvokeAsync("LayoutScript")
+</body>
+</html>

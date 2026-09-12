@@ -1,0 +1,114 @@
+﻿@model List<ResultAppUserDto>
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    string[] gradients = new[]
+    {
+        "linear-gradient(135deg,#6366f1,#8b5cf6)",
+        "linear-gradient(135deg,#06b6d4,#3b82f6)",
+        "linear-gradient(135deg,#f59e0b,#ef4444)",
+        "linear-gradient(135deg,#10b981,#059669)",
+        "linear-gradient(135deg,#ec4899,#f43f5e)",
+        "linear-gradient(135deg,#8b5cf6,#6366f1)"
+    };
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-people-fill me-1"></i>Rol Kullanıcıları</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="RoleList">Roller</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.RoleName Kullanıcıları</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-4 gap-3">
+    <div>
+        <h4 class="fw-bold mb-1">
+            <i class="bi bi-shield-lock-fill me-1" style="color:#6366f1;"></i>@ViewBag.RoleName
+            <span class="badge rounded-pill bg-light text-dark ms-1">@(Model?.Count ?? 0) kullanıcı</span>
+        </h4>
+        <p class="text-muted mb-0 small">Bu role sahip kullanıcıların listesi</p>
+    </div>
+    <a asp-action="RoleList" class="btn btn-light rounded-pill px-4 shadow-sm">
+        <i class="bi bi-arrow-left me-1"></i>Rollere Dön
+    </a>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row g-3">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i];
+            var gradient = gradients[i % gradients.Length];
+            var fullName = $"{item.Name} {item.SurName}".Trim();
+            var safeName = string.IsNullOrWhiteSpace(fullName) ? "İsimsiz Kullanıcı" : fullName;
+            var initial = string.IsNullOrWhiteSpace(item.Name) ? "?" : item.Name.Trim()[0].ToString().ToUpper();
+            var hasImage = !string.IsNullOrWhiteSpace(item.ImageUrl);
+
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100 user-card position-relative overflow-hidden">
+                    <div class="position-absolute top-0 end-0 opacity-25" style="width:90px; height:90px; background:@gradient; border-radius:0 0 0 100%;"></div>
+
+                    <div class="card-body position-relative text-center">
+                        <div style="height:72px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+                            @if (hasImage)
+                            {
+                                <img src="@item.ImageUrl" alt="@safeName"
+                                     class="rounded-circle"
+                                     style="width:72px; height:72px; object-fit:cover; border:3px solid #fff; box-shadow:0 4px 14px rgba(0,0,0,0.12);" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
+                                     style="width:72px; height:72px; background:@gradient; font-size:26px; box-shadow:0 4px 14px rgba(0,0,0,0.12);">
+                                    @initial
+                                </div>
+                            }
+                        </div>
+
+                        <h6 class="fw-semibold mb-3" style="color:#28314b;">@safeName</h6>
+
+                        <a asp-controller="Role" asp-action="AssignRole" asp-route-userId="@item.Id"
+                           class="btn btn-sm rounded-pill px-3" style="background:rgba(16,185,129,0.1); color:#10b981; border:none;">
+                            <i class="bi bi-shield-fill-check me-1"></i>Rollerini Düzenle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width:72px; height:72px;">
+                <i class="bi bi-person-x fs-2 text-muted"></i>
+            </div>
+            <h6 class="fw-semibold">Bu role sahip kullanıcı yok</h6>
+            <p class="text-muted small mb-0">Henüz kimseye bu rol atanmamış.</p>
+        </div>
+    </div>
+}
+
+<style>
+    .user-card {
+        transition: all 0.25s ease;
+        border-radius: 16px;
+    }
+
+        .user-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+        }
+</style>

@@ -1,0 +1,18 @@
+﻿<!doctype html>
+<html class="no-js" lang="zxx">
+    @await Component.InvokeAsync("LayoutHead")
+    <body>
+
+    @await Component.InvokeAsync("LayoutHeader")
+         @await Component.InvokeAsync("LayoutMobileMenu")
+        <!-- main-area -->
+        <main>
+        @RenderBody()
+        </main>
+        <!-- main-area-end -->
+
+        @await Component.InvokeAsync("LayoutFooter")
+    @await Component.InvokeAsync("LayoutScript")
+		
+    </body>
+</html>

@@ -1,0 +1,32 @@
+﻿@model GetArticleByIdDto
+<div class="posts_navigation pt-35 pb-35">
+    <div class="row align-items-center">
+        <div class="col-xl-4 col-md-5">
+            @if (Model != null)
+            {
+                <div class="prev-link" style="display:flex; align-items:center; gap:16px; background:#fff; border-radius:14px; padding:16px; box-shadow:0 5px 20px rgba(0,0,0,0.06); transition:transform .25s ease;"
+                     onmouseover="this.style.transform='translateY(-4px)';" onmouseout="this.style.transform='translateY(0)';">
+                    <div style="width:70px; height:70px; border-radius:10px; overflow:hidden; flex-shrink:0;">
+                        <img src="@Model.CoverImageUrl" alt="@Model.Title" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <div style="min-width:0;">
+                        <span style="display:flex; align-items:center; gap:6px; color:#8891ac; font-size:12.5px; margin-bottom:6px;">
+                            <i class="fal fa-arrow-left" style="color:#ff5e14;"></i> Yazarın Bir Önceki Postu
+                        </span>
+                        <h4 style="margin:0; font-size:15px; line-height:1.4;">
+                            <a href="/Blog/BlogDetail/@Model.ArticleId" style="color:#28314b; font-weight:700; text-decoration:none; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                                @Model.Title
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-xl-4 col-md-2 text-left text-md-center">
+            <a href="blog.html" class="blog-filter"><img src="img/icon/c_d01.png" alt=""></a>
+        </div>
+
+        @await Component.InvokeAsync("BlogDetailNavigationNextPost", new { id = ViewBag.Id })
+    </div>
+</div>

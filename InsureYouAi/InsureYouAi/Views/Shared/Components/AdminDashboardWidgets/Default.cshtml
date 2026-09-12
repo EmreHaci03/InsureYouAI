@@ -1,0 +1,70 @@
+﻿<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
+    <div class="col">
+        <div class="card rounded-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="">
+                        <p class="mb-1">Toplam Makale</p>
+                        <h4 class="mb-0">@ViewBag.TotalArticles</h4>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-newspaper"></i> <span>Yayında</span></p>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-arrow-up"></i><span>@ViewBag.n1</span></p>
+                    </div>
+                    <div class="ms-auto widget-icon bg-primary text-white">
+                        <i class="bi bi-newspaper"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card rounded-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="">
+                        <p class="mb-1">Toplam Kullanıcı</p>
+                        <h4 class="mb-0">@ViewBag.TotalUsers</h4>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-people-fill"></i> <span>Kayıtlı üye</span></p>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-arrow-up"></i><span>@ViewBag.n2</span></p>
+                    </div>
+                    <div class="ms-auto widget-icon bg-success text-white">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card rounded-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="">
+                        <p class="mb-1">Onay Bekleyen Yorum</p>
+                        <h4 class="mb-0">@ViewBag.PendingComments</h4>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-chat-square-text-fill"></i> <span>İncelenmeli</span></p>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-arrow-up"></i><span>@ViewBag.n3</span></p>
+                    </div>
+                    <div class="ms-auto widget-icon bg-orange text-white">
+                        <i class="bi bi-chat-square-text-fill"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card rounded-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="">
+                        <p class="mb-1">Okunmamış Mesaj</p>
+                        <h4 class="mb-0">@ViewBag.UnreadMessages</h4>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-envelope-fill"></i> <span>Yanıt bekliyor</span></p>
+                        <p class="mb-0 mt-2 font-13"><i class="bi bi-arrow-up"></i><span>@ViewBag.n4</span></p>
+                    </div>
+                    <div class="ms-auto widget-icon bg-info text-white">
+                        <i class="bi bi-envelope-fill"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,182 @@
+﻿@model GetContactByIdDto
+<section id="contact" class="contact-area after-none contact-bg pb-120 p-relative fix" style="background:#f9fafc;">
+    <div class="container">
+        <div class="row justify-content-center mb-60" style="margin-bottom:60px;">
+            <div class="col-lg-7 text-center">
+                <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                    <i class="fal fa-envelope"></i> Bize Ulaşın
+                </span>
+                <h2 style="font-size:34px; font-weight:700; color:#28314b; line-height:1.35; margin-bottom:16px;">Size Nasıl Yardımcı Olabiliriz?</h2>
+                <p style="color:#6b7280; font-size:15px; line-height:1.8;">@Model.Description</p>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-60" style="margin-bottom:50px;">
+            <div class="col-md-4">
+                <div style="background:#fff; border-radius:16px; padding:30px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.05); height:100%;">
+                    <div style="width:56px; height:56px; border-radius:14px; background:rgba(255,94,20,0.1); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;">
+                        <i class="fal fa-phone" style="color:#ff5e14; font-size:22px;"></i>
+                    </div>
+                    <h6 style="color:#28314b; font-weight:700; margin-bottom:8px;">Telefon</h6>
+                    <p style="color:#6b7280; font-size:14px; margin:0;">@Model.PhoneNumber</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background:#fff; border-radius:16px; padding:30px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.05); height:100%;">
+                    <div style="width:56px; height:56px; border-radius:14px; background:rgba(255,94,20,0.1); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;">
+                        <i class="fal fa-envelope" style="color:#ff5e14; font-size:22px;"></i>
+                    </div>
+                    <h6 style="color:#28314b; font-weight:700; margin-bottom:8px;">E-posta</h6>
+                    <p style="color:#6b7280; font-size:14px; margin:0;">@Model.Email</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div style="background:#fff; border-radius:16px; padding:30px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.05); height:100%;">
+                    <div style="width:56px; height:56px; border-radius:14px; background:rgba(255,94,20,0.1); display:flex; align-items:center; justify-content:center; margin:0 auto 18px;">
+                        <i class="fal fa-map-marker-alt" style="color:#ff5e14; font-size:22px;"></i>
+                    </div>
+                    <h6 style="color:#28314b; font-weight:700; margin-bottom:8px;">Adres</h6>
+                    <p style="color:#6b7280; font-size:14px; margin:0;">@Model.Adress</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12 order-1">
+                <img src="~/defaultimages/contact-img.png" alt="img" data-aos="fade-right" data-aos-duration="1000" style="width:100%; border-radius:20px;">
+            </div>
+            <div class="col-lg-6 col-md-12 order-2">
+                <div style="background:#fff; border-radius:20px; padding:45px 40px; box-shadow:0 5px 30px rgba(0,0,0,0.06);">
+                    <div class="section-title p-relative pr-60 mb-30">
+                        <h2 data-aos="fade-up" data-aos-duration="1000" style="font-size:26px; font-weight:700; color:#28314b; margin-bottom:20px;">
+                            Bizden Sigorta Teklifi Alın
+                        </h2>
+                    </div>
+                    <div class="tab-content" id="myTabContent" data-aos="fade-up" data-aos-duration="1600">
+                        <div class="tab-pane fade show active" id="voverview" role="tabpanel">
+                            <div class="contact-bg">
+                                <form asp-controller="DefaultMessage" asp-action="DefaultCreateMessage" method="post" class="contact-form">
+                                    <div class="row g-3">
+                                        <div class="col-lg-6">
+                                            <input type="text" name="NameSurname" placeholder="Ad Soyad" required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="email" name="Email" placeholder="E-posta" required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="text" name="PhoneNumber" placeholder="Telefon No." required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="text" name="Subject" placeholder="Seyahat Sigortası Talebi" value="Seyahat Sigortası Talebi"
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <textarea name="MessageDetail" rows="3" placeholder="Talebinizi kısaca açıklayın (varış yeri, kişi sayısı, kalış süresi vb.)" required
+                                                      style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box; resize:vertical; font-family:inherit;"></textarea>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn ss-btn" style="width:100%; padding:14px; background:#ff5e14; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">
+                                                Talebi Gönder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="degre" role="tabpanel">
+                            <div class="contact-bg">
+                                <form asp-controller="Message" asp-action="CreateMessage" method="post" class="contact-form">
+                                    <div class="row g-3">
+                                        <div class="col-lg-6">
+                                            <input type="text" name="NameSurname" placeholder="Ad Soyad" required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="email" name="Email" placeholder="E-posta" required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="text" name="PhoneNumber" placeholder="Telefon No." required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="text" name="Subject" value="Konut Sigortası Talebi" readonly
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f4f5f9; font-size:14px; box-sizing:border-box; color:#8891ac;">
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <textarea name="MessageDetail" rows="3" placeholder="Talebinizi kısaca açıklayın (konut tipi, m², konum vb.)" required
+                                                      style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box; resize:vertical; font-family:inherit;"></textarea>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn ss-btn" style="width:100%; padding:14px; background:#ff5e14; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">
+                                                Talebi Gönder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="vgallery" role="tabpanel">
+                            <div class="contact-bg">
+                                <form asp-controller="Message" asp-action="CreateMessage" method="post" class="contact-form">
+                                    <div class="row g-3">
+                                        <div class="col-lg-6">
+                                            <input type="text" name="NameSurname" placeholder="Ad Soyad" required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="email" name="Email" placeholder="E-posta" required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="text" name="PhoneNumber" placeholder="Telefon No." required
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box;">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="text" name="Subject" value="Hayat Sigortası Talebi" readonly
+                                                   style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f4f5f9; font-size:14px; box-sizing:border-box; color:#8891ac;">
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <textarea name="MessageDetail" rows="3" placeholder="Talebinizi kısaca açıklayın (yaş, teminat kapsamı beklentisi vb.)" required
+                                                      style="width:100%; padding:14px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; box-sizing:border-box; resize:vertical; font-family:inherit;"></textarea>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn ss-btn" style="width:100%; padding:14px; background:#ff5e14; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer;">
+                                                Talebi Gönder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .nav-tabs span.active {
+        background: #ff5e14 !important;
+        color: #fff !important;
+    }
+</style>
+
+<script>
+    document.querySelectorAll('#myTabContent .nav-tabs span').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            document.querySelectorAll('#myTabContent .nav-tabs span').forEach(function (t) {
+                t.style.background = '#f4f5f9';
+                t.style.color = '#28314b';
+                t.classList.remove('active');
+            });
+            this.style.background = '#ff5e14';
+            this.style.color = '#fff';
+            this.classList.add('active');
+        });
+    });
+</script>

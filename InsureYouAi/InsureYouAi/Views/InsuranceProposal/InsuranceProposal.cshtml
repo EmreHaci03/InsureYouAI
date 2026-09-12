@@ -1,0 +1,222 @@
+﻿@model InsureYouAi.Dtos.RecommendationResultDto.CreateRecommendationResultDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "AI ile Sigorta Önerisi";
+    var result = ViewBag.Result as InsureYouAi.Dtos.RecommendationResultDto.RecommendationResultDto;
+}
+<div class="container py-5" style="max-width:900px;">
+
+    <div class="text-center mb-5">
+        <div class="rounded-4 d-inline-flex align-items-center justify-content-center mb-3"
+             style="width:64px; height:64px; background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+            <i class="bi bi-robot text-white fs-3"></i>
+        </div>
+        <h3 class="fw-bold mb-2">AI ile Özelleştirilmiş Sigorta Önerisi</h3>
+        <p class="text-muted mb-0">Bilgilerinizi girin, size en uygun planı yapay zeka belirlesin</p>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (result != null)
+    {
+        var confColor = result.ConfidenceLevel?.ToLower() switch
+        {
+            "yüksek" => ("#10b981", "#e6f7f1"),
+            "orta" => ("#f59e0b", "#fef3e2"),
+            "düşük" => ("#ef4444", "#fdeaea"),
+            _ => ("#6b7280", "#f1f2f4")
+        };
+
+        <div class="card border-0 shadow-sm mb-4 result-card">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex align-items-center gap-2 mb-4">
+                    <span class="badge rounded-pill d-inline-flex align-items-center gap-1"
+                          style="background:@confColor.Item2; color:@confColor.Item1; font-weight:600; font-size:12px; padding:6px 12px;">
+                        <i class="bi bi-stars"></i>Güven Seviyesi: @result.ConfidenceLevel
+                    </span>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                    <div>
+                        <p class="text-muted small mb-1">Önerilen Planınız</p>
+                        <h2 class="fw-bold mb-0" style="color:#6366f1;">@result.RecommendedPlanTitle</h2>
+                    </div>
+                    <div class="text-end">
+                        <h2 class="fw-bold mb-0">
+                            @result.RecommendedPlanPrice.ToString("N0")<span class="fs-6 text-muted fw-normal">₺/ay</span>
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="bg-light rounded-3 p-3 mb-4" style="border-left:3px solid #6366f1;">
+                    <p class="mb-0" style="line-height:1.7;">
+                        <i class="bi bi-chat-quote-fill me-1" style="color:#6366f1;"></i>@result.Reasoning
+                    </p>
+                </div>
+
+                @if (result.Tips != null && result.Tips.Any())
+                {
+                    <h6 class="fw-semibold mb-3"><i class="bi bi-lightbulb-fill me-1" style="color:#f59e0b;"></i>Öneriler</h6>
+                    <ul class="list-unstyled mb-4">
+                        @foreach (var tip in result.Tips)
+                        {
+                            <li class="d-flex align-items-start gap-2 mb-2">
+                                <i class="bi bi-check-circle-fill mt-1" style="color:#10b981; font-size:14px;"></i>
+                                <span class="small">@tip</span>
+                            </li>
+                        }
+                    </ul>
+                }
+
+                @if (result.RecommendedPlanId != null)
+                {
+                    <a asp-controller="Subscription" asp-action="Subscribe" asp-route-planId="@result.RecommendedPlanId"
+                       class="btn rounded-pill px-4 fw-semibold text-white" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); border:none;">
+                        <i class="bi bi-arrow-right-circle me-1"></i>Bu Planı Seç
+                    </a>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="InsuranceProposal" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Ad Soyad</label>
+                        <input asp-for="FullName" class="form-control rounded-3" placeholder="Adınız Soyadınız">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">Yaş</label>
+                        <input asp-for="Age" type="number" min="0" max="120" class="form-control rounded-3" required>
+                        <span asp-validation-for="Age" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold">Şehir</label>
+                        <input asp-for="City" class="form-control rounded-3" placeholder="İstanbul" required>
+                        <span asp-validation-for="City" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">Aile Üye Sayısı</label>
+                        <input asp-for="FamilyMemberCount" type="number" min="1" class="form-control rounded-3" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">Medeni Durum</label>
+                        <select asp-for="MaritalStatus" class="form-select rounded-3">
+                            <option value="Bekar">Bekar</option>
+                            <option value="Evli">Evli</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">Seyahat Sıklığı</label>
+                        <select asp-for="TravelFrequency" class="form-select rounded-3">
+                            <option value="Hiç">Hiç</option>
+                            <option value="Yılda 1-2 kez">Yılda 1-2 kez</option>
+                            <option value="Yılda 3-5 kez">Yılda 3-5 kez</option>
+                            <option value="Sık sık">Sık sık</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Aylık Bütçe (₺)</label>
+                        <input asp-for="MonthlyBudget" type="number" min="0" step="50" class="form-control rounded-3" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">Tercih Edilen Kapsam Türü</label>
+                        <select asp-for="PreferredCoverageType" class="form-select rounded-3">
+                            <option value="Bilmiyorum">Bilmiyorum / Fark etmez</option>
+                            <option value="Sağlık">Sağlık</option>
+                            <option value="Seyahat">Seyahat</option>
+                            <option value="Hayat">Hayat</option>
+                            <option value="Kombine">Kombine</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">Meslek Risk Seviyesi</label>
+                        <select asp-for="OccupationRiskLevel" class="form-select rounded-3">
+                            <option value="Düşük">Düşük</option>
+                            <option value="Orta">Orta</option>
+                            <option value="Yüksek">Yüksek</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                        <div class="form-check mt-4">
+                            <input asp-for="HasChronicIllness" class="form-check-input" type="checkbox">
+                            <label asp-for="HasChronicIllness" class="form-check-label small">Kronik rahatsızlığım var</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-center">
+                        <div class="form-check mt-4">
+                            <input asp-for="IsSmoker" class="form-check-input" type="checkbox">
+                            <label asp-for="IsSmoker" class="form-check-label small">Sigara kullanıyorum</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label small fw-semibold">Ek Notlar</label>
+                        <textarea asp-for="AdditionalNotes" class="form-control rounded-3" rows="3" placeholder="Belirtmek istediğiniz başka bir şey var mı?"></textarea>
+                    </div>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" id="submitBtn" class="btn rounded-pill py-2 fw-semibold text-white" style="background:linear-gradient(135deg,#6366f1,#8b5cf6); border:none;">
+                        <i class="bi bi-magic me-1"></i>AI Önerisini Al
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus, .form-select:focus {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 0.2rem rgba(139,92,246,0.15);
+    }
+
+    .result-card {
+        border-radius: 20px;
+        border: 2px solid #eef0ff !important;
+        animation: fadeInResult .35s ease;
+    }
+
+    @@keyframes fadeInResult {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card {
+        border-radius: 18px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('form');
+        var btn = document.getElementById('submitBtn');
+        if (form && btn) {
+            form.addEventListener('submit', function () {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>AI Analiz Ediyor...';
+            });
+        }
+    });
+</script>

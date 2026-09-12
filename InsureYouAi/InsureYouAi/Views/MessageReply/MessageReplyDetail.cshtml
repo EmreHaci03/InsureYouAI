@@ -1,0 +1,87 @@
+﻿@model GetMessageReplyByIdDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    var safeName = Model?.Message ?? "Bilinmiyor";
+    var initial = string.IsNullOrWhiteSpace(safeName) ? "?" : safeName.Trim()[0].ToString().ToUpper();
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-reply-fill me-1"></i>Yanıt Detayı</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="MessageList">Mesajlar</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="MessageReplyList">Yanıt Geçmişi</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Detay</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm position-relative overflow-hidden">
+            <div style="height:90px; background:linear-gradient(135deg,#6366f1,#8b5cf6);"></div>
+
+            <div class="card-body pt-0" style="margin-top:-45px;">
+                <div class="d-flex align-items-end gap-3 mb-4 flex-wrap">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                         style="width:90px; height:90px; background:linear-gradient(135deg,#6366f1,#8b5cf6); font-size:32px; border:4px solid #fff; box-shadow:0 6px 18px rgba(0,0,0,0.12);">
+                        @initial
+                    </div>
+                    <div class="pb-2">
+                        <h5 class="fw-bold mb-1">@safeName</h5>
+                        <span class="text-muted small d-flex align-items-center gap-1">
+                            <i class="bi bi-clock"></i>@Model.ReplyDate.ToString("dd MMMM yyyy, HH:mm")
+                        </span>
+                    </div>
+                    <div class="ms-auto pb-2">
+                        @if (Model.IsSentSuccessfully)
+                        {
+                            <span class="badge rounded-pill" style="background:#eafaf1; color:#28a745; font-size:12.5px; font-weight:700; padding:8px 16px;">
+                                <i class="bi bi-check-circle-fill me-1"></i>Başarıyla Gönderildi
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge rounded-pill" style="background:#fdeaea; color:#dc3545; font-size:12.5px; font-weight:700; padding:8px 16px;">
+                                <i class="bi bi-x-circle-fill me-1"></i>Gönderilemedi
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:34px; height:34px; background:rgba(139,92,246,0.1);">
+                        <i class="bi bi-stars" style="color:#8b5cf6; font-size:14px;"></i>
+                    </div>
+                    <h6 class="fw-bold mb-0">Gönderilen Yanıt Metni</h6>
+                    <span class="badge rounded-pill bg-light text-dark ms-auto" style="font-size:11px;">
+                        <i class="bi bi-cpu me-1" style="color:#8b5cf6;"></i>AI Yanıtı
+                    </span>
+                </div>
+
+                <div class="bg-light rounded-3 p-4" style="border-left:3px solid #6366f1; white-space:pre-wrap;">
+                    <p class="mb-0 text-body" style="line-height:1.9; font-size:14.5px;">@Model.ReplyDetail</p>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <a asp-action="MessageReplyList" class="btn btn-light rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i>Listeye Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

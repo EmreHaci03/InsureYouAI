@@ -1,0 +1,46 @@
+﻿@{
+    string userName = User?.Identity?.Name ?? "Ziyaretçi";
+    string initial = string.IsNullOrWhiteSpace(userName) ? "?" : userName.Trim()[0].ToString().ToUpper();
+    string pageTitle = ViewData["Title"]?.ToString() ?? "Panelim";
+}
+<!DOCTYPE html>
+<html lang="tr">
+@await Component.InvokeAsync("MemberLayoutHead")
+<body>
+    <div class="app-shell">
+
+      @await Component.InvokeAsync("MemberLayoutSidebar")
+
+        <div class="main-column">
+
+           @await Component.InvokeAsync("MemberLayoutHeader")
+
+            <main class="content">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="flash flash-success">@TempData["SuccessMessage"]</div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="flash flash-error">@TempData["ErrorMessage"]</div>
+                }
+
+                @RenderBody()
+            </main>
+
+           @await Component.InvokeAsync("MemberLayoutFooter")
+
+        </div>
+    </div>
+
+    <script>
+        function toggleMemberSidebar() {
+            document.getElementById('memberSidebar').classList.toggle('is-open');
+            document.getElementById('memberSidebarBackdrop').classList.toggle('is-open');
+        }
+        document.getElementById('memberSidebarBackdrop').addEventListener('click', toggleMemberSidebar);
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

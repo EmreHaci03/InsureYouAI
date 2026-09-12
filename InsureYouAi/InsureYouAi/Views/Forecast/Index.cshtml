@@ -1,0 +1,127 @@
+﻿@model List<PolicySalesData>
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    var forecast = ViewBag.Forecast;
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-graph-up-arrow me-1"></i>Poliçe Satış Tahmini</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Tahminleme</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-12">
+        <div class="card rounded-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <h6 class="mb-0">Aylık Poliçe Satışları ve 12 Aylık Tahmin</h6>
+                    <span class="badge rounded-pill bg-light text-dark ms-auto">
+                        <i class="bi bi-cpu me-1" style="color:#8b5cf6;"></i>ML.NET SSA Tahmini
+                    </span>
+                </div>
+                <div id="forecastChart" style="height:340px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card rounded-4">
+            <div class="card-body">
+                <h6 class="mb-3">Tahmin Detayları (Önümüzdeki 6 Ay)</h6>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Ay</th>
+                                <th>Tahmini Satış</th>
+                                <th>Alt Sınır</th>
+                                <th>Üst Sınır</th>
+                            </tr>
+                        </thead>
+                        <tbody id="forecastTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js"></script>
+<script>
+    var historicalDates = @Html.Raw(Json.Serialize(Model.Select(x => x.Date.ToString("yyyy-MM"))));
+    var historicalCounts = @Html.Raw(Json.Serialize(Model.Select(x => x.SaleCount)));
+
+    var forecastCounts = @Html.Raw(Json.Serialize(forecast.ForecastedValues));
+    var lowerBound = @Html.Raw(Json.Serialize(forecast.LowerBoundValues));
+    var upperBound = @Html.Raw(Json.Serialize(forecast.UpperBoundValues));
+
+    var lastDate = new Date(historicalDates[historicalDates.length - 1] + "-01");
+    var forecastDates = [];
+    for (var i = 1; i <= forecastCounts.length; i++) {
+        var d = new Date(lastDate);
+        d.setMonth(d.getMonth() + i);
+        forecastDates.push(d.toISOString().slice(0, 7));
+    }
+
+    var allDates = historicalDates.concat(forecastDates);
+
+    var historicalSeries = historicalCounts.concat(new Array(forecastCounts.length).fill(null));
+    var forecastSeries = new Array(historicalCounts.length - 1).fill(null).concat([historicalCounts[historicalCounts.length - 1]]).concat(forecastCounts);
+    var lowerSeries = new Array(historicalCounts.length - 1).fill(null).concat([historicalCounts[historicalCounts.length - 1]]).concat(lowerBound);
+    var upperSeries = new Array(historicalCounts.length - 1).fill(null).concat([historicalCounts[historicalCounts.length - 1]]).concat(upperBound);
+
+    var options = {
+        series: [
+            { name: 'Gerçekleşen Satış', data: historicalSeries },
+            { name: 'Tahmin', data: forecastSeries },
+            { name: 'Üst Sınır', data: upperSeries },
+            { name: 'Alt Sınır', data: lowerSeries }
+        ],
+        chart: {
+            type: 'line',
+            height: 340,
+            toolbar: { show: false }
+        },
+        stroke: {
+            curve: 'smooth',
+            width: [3, 3, 1, 1],
+            dashArray: [0, 5, 3, 3]
+        },
+        colors: ['#6366f1', '#f59e0b', '#c3c2b7', '#c3c2b7'],
+        fill: {
+            opacity: [1, 1, 0.05, 0.05]
+        },
+        markers: { size: 0 },
+        xaxis: {
+            categories: allDates
+        },
+        legend: {
+            position: 'top'
+        },
+        dataLabels: { enabled: false }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#forecastChart"), options);
+    chart.render();
+
+    var tbody = document.getElementById('forecastTableBody');
+    for (var i = 0; i < forecastCounts.length; i++) {
+        var row = document.createElement('tr');
+        row.innerHTML =
+            '<td>' + forecastDates[i] + '</td>' +
+            '<td class="fw-semibold">' + Math.round(forecastCounts[i]) + '</td>' +
+            '<td class="text-muted">' + Math.round(lowerBound[i]) + '</td>' +
+            '<td class="text-muted">' + Math.round(upperBound[i]) + '</td>';
+        tbody.appendChild(row);
+    }
+</script>

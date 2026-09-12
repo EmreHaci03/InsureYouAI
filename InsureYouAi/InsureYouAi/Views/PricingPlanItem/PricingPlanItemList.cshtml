@@ -1,0 +1,188 @@
+﻿@model List<ResultPricingPlanItemDto>
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    string[] gradients = new[]
+    {
+        "linear-gradient(135deg,#6366f1,#8b5cf6)",
+        "linear-gradient(135deg,#06b6d4,#3b82f6)",
+        "linear-gradient(135deg,#f59e0b,#ef4444)",
+        "linear-gradient(135deg,#10b981,#059669)",
+        "linear-gradient(135deg,#ec4899,#f43f5e)",
+    };
+
+    var groups = Model?.GroupBy(x => x.PricingPlan ?? "Bağlı değil").ToList() ?? new List<IGrouping<string, ResultPricingPlanItemDto>>();
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-list-check me-1"></i>Plan Öğeleri</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="PricingPlanItemList">Plan Öğeleri</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Liste</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-4 gap-3">
+    <div>
+        <h4 class="fw-bold mb-1">Plan Öğeleri <span class="badge rounded-pill bg-light text-dark ms-1">@(Model?.Count ?? 0)</span></h4>
+        <p class="text-muted mb-0 small">Öğeler bağlı oldukları plana göre gruplanmıştır</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <div class="position-relative">
+            <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
+            <input class="form-control ps-5 rounded-pill border-0 shadow-sm" type="text" placeholder="Öğe ara..." id="searchInput" style="min-width:240px;">
+        </div>
+        <a asp-action="CreatePricingPlanItem" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i>Yeni Öğe
+        </a>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row g-4" id="planGroups">
+        @for (int g = 0; g < groups.Count; g++)
+        {
+            var group = groups[g];
+            var gradient = gradients[g % gradients.Length];
+
+            <div class="col-xl-4 col-lg-6 plan-group-wrap">
+                <div class="card border-0 shadow-sm h-100 plan-group-card overflow-hidden">
+                    <div class="p-3 d-flex align-items-center gap-2" style="background:@gradient;">
+                        <i class="bi bi-cash-stack text-white fs-5"></i>
+                        <h6 class="fw-bold text-white mb-0">@group.Key</h6>
+                        <span class="badge rounded-pill bg-white ms-auto" style="color:#111;">@group.Count()</span>
+                    </div>
+
+                    <div class="card-body p-3">
+                        <div class="d-flex flex-column gap-2">
+                            @foreach (var item in group)
+                            {
+                                <div class="item-row d-flex align-items-start justify-content-between gap-2 p-2 rounded-3 item-card-wrap"
+                                     data-name="@($"{item.PlanItem} {item.PricingPlan}".ToLower())">
+                                    <div class="d-flex align-items-start gap-2">
+                                        <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
+                                        <span>@item.PlanItem</span>
+                                    </div>
+
+                                    <div class="dropdown flex-shrink-0">
+                                        <button class="btn btn-sm btn-icon border-0 text-muted" type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                                            <li>
+                                                <a class="dropdown-item" asp-action="UpdatePricingPlanItem" asp-route-id="@item.PricingPlanItemId">
+                                                    <i class="bi bi-pencil-fill me-2 text-warning"></i>Düzenle
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <button type="button" class="dropdown-item text-danger btn-delete-item"
+                                                        data-id="@item.PricingPlanItemId" data-name="@item.PlanItem">
+                                                    <i class="bi bi-trash-fill me-2"></i>Sil
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width:72px; height:72px;">
+                <i class="bi bi-inbox fs-2 text-muted"></i>
+            </div>
+            <h6 class="fw-semibold">Henüz öğe eklenmemiş</h6>
+            <p class="text-muted small">Başlamak için ilk öğenizi oluşturun</p>
+            <a asp-action="CreatePricingPlanItem" class="btn btn-primary rounded-pill px-4 mt-2">
+                <i class="bi bi-plus-lg me-1"></i>İlk Öğeyi Ekle
+            </a>
+        </div>
+    </div>
+}
+
+<form id="deleteForm" asp-action="DeletePricingPlanItem" method="post" class="d-none">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" id="deleteItemId" value="" />
+</form>
+
+<style>
+    .plan-group-card {
+        border-radius: 16px;
+        transition: all 0.25s ease;
+    }
+
+        .plan-group-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08) !important;
+        }
+
+    .item-row {
+        background: #f8f9fb;
+        transition: background 0.2s ease;
+    }
+
+        .item-row:hover {
+            background: #f1f2f6;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function () {
+                var term = this.value.toLowerCase();
+                document.querySelectorAll('.item-card-wrap').forEach(function (row) {
+                    var match = row.dataset.name.includes(term);
+                    row.style.display = match ? '' : 'none';
+
+                    var groupCard = row.closest('.plan-group-wrap');
+                    if (groupCard) {
+                        var anyVisible = Array.from(groupCard.querySelectorAll('.item-card-wrap'))
+                            .some(function (r) { return r.style.display !== 'none'; });
+                        groupCard.style.display = anyVisible ? '' : 'none';
+                    }
+                });
+            });
+        }
+
+        document.querySelectorAll('.btn-delete-item').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var id = this.dataset.id;
+                var name = this.dataset.name;
+
+                if (confirm('"' + name + '" öğesini silmek istediğinize emin misiniz?')) {
+                    document.getElementById('deleteItemId').value = id;
+                    document.getElementById('deleteForm').submit();
+                }
+            });
+        });
+
+    });
+</script>

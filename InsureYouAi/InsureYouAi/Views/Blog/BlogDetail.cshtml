@@ -1,0 +1,88 @@
+﻿@model GetArticleByIdDto
+@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zxx">
+@await Component.InvokeAsync("LayoutHead")
+<body>
+    @await Component.InvokeAsync("LayoutHeader")
+    @await Component.InvokeAsync("LayoutMobileMenu")
+    <main>
+        @await Component.InvokeAsync("BlogDetailBreadCrumb", new { id = Model.ArticleId })
+        <!-- inner-blog -->
+        <section class="inner-blog b-details-p pt-120 pb-120">
+            <div class="container">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div id="commentSuccessAlert" style="display:flex; align-items:center; gap:16px; background:linear-gradient(135deg,#eafaf1,#f4fef8); border:1px solid #b7ebc6; border-left:5px solid #28a745; border-radius:14px; padding:20px 24px; margin-bottom:30px; box-shadow:0 5px 20px rgba(40,167,69,0.08); animation:slideDownAlert .4s ease both;">
+                        <div style="width:46px; height:46px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 3px 10px rgba(40,167,69,0.15);">
+                            <i class="fas fa-check-circle" style="color:#28a745; font-size:19px;"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <h6 style="margin:0 0 4px; color:#1e7e34; font-weight:700; font-size:15px;">Yorumunuz Gönderildi</h6>
+                            <p style="margin:0; color:#3a6b45; font-size:13.5px; line-height:1.6;">@TempData["SuccessMessage"]</p>
+                        </div>
+                        <span onclick="document.getElementById('commentSuccessAlert').style.display='none';" style="cursor:pointer; color:#1e7e34; font-size:20px; line-height:1; opacity:.6; transition:opacity .2s; flex-shrink:0;"
+                              onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='.6';">&times;</span>
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div id="commentAlert" style="display:flex; align-items:center; gap:16px; background:linear-gradient(135deg,#fdeaea,#fff5f5); border:1px solid #f5c6cb; border-left:5px solid #dc3545; border-radius:14px; padding:20px 24px; margin-bottom:30px; box-shadow:0 5px 20px rgba(220,53,69,0.08); animation:slideDownAlert .4s ease both;">
+                        <div style="width:46px; height:46px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 3px 10px rgba(220,53,69,0.15);">
+                            <i class="fas fa-exclamation-triangle" style="color:#dc3545; font-size:19px;"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <h6 style="margin:0 0 4px; color:#a71d2a; font-weight:700; font-size:15px;">Yorumunuz Yayınlanamadı</h6>
+                            <p style="margin:0; color:#8b3a3a; font-size:13.5px; line-height:1.6;">@TempData["ErrorMessage"]</p>
+                        </div>
+                        <span onclick="document.getElementById('commentAlert').style.display='none';" style="cursor:pointer; color:#a71d2a; font-size:20px; line-height:1; opacity:.6; transition:opacity .2s; flex-shrink:0;"
+                              onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='.6';">&times;</span>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="blog-details-wrap">
+                            @await Component.InvokeAsync("BlogDetailContent", new { id = Model.ArticleId })
+                            @await Component.InvokeAsync("BlogDetailNavigationPost", new { id = Model.ArticleId })
+                            @await Component.InvokeAsync("BlogDetailAvatar", new { id = Model.ArticleId })
+                            @await Component.InvokeAsync("BlogDetailCommentList", new { id = Model.ArticleId })
+                            @await Component.InvokeAsync("BlogDetailAddComment", new { id = Model.ArticleId })
+                        </div>
+                    </div>
+                    <!-- #right side -->
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        <aside class="sidebar-widget">
+                            @await Html.PartialAsync("/Views/Blog/GetBlog.cshtml")
+                            @await Component.InvokeAsync("BlogListSocialMedia")
+                            @await Component.InvokeAsync("BlogListCategory")
+                            @await Component.InvokeAsync("BlogListRecentPost")
+                            @await Component.InvokeAsync("BlogListTagCloud")
+                        </aside>
+                    </div>
+                    <!-- #right side end -->
+                </div>
+            </div>
+        </section>
+        <!-- inner-blog-end -->
+        @await Component.InvokeAsync("DefaultNewsletter")
+    </main>
+    <!-- main-area-end -->
+    @await Component.InvokeAsync("LayoutFooter")
+    @await Component.InvokeAsync("LayoutScript")
+</body>
+</html>
+<style>
+    @@keyframes slideDownAlert {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

@@ -1,0 +1,196 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zxx">
+@await Component.InvokeAsync("LayoutHead")
+<body>
+    @await Component.InvokeAsync("LayoutHeader")
+    @await Component.InvokeAsync("LayoutMobileMenu")
+    <main>
+
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center" style="
+            background-image: linear-gradient(135deg, rgba(20, 25, 45, 0.85), rgba(255, 94, 20, 0.35)), url('/defaultimages/coverimages/cover0.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            ">
+            <div style="position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,94,20,0.15); filter:blur(10px);"></div>
+            <div style="position:absolute; bottom:-80px; left:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.06);"></div>
+
+            <div class="container" style="position:relative; z-index:2;">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="breadcrumb-wrap text-left">
+                            <div class="breadcrumb-title">
+                                <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.15); color:#ff8c4d; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:18px; border:1px solid rgba(255,94,20,0.3);">
+                                    <i class="fal fa-envelope"></i> Bize Ulaşın
+                                </span>
+                                <h2 style="color:#fff; font-size:42px; font-weight:700; margin-bottom:15px; letter-spacing:.5px; text-shadow:0 2px 20px rgba(0,0,0,0.3);">İletişim</h2>
+                                <div class="breadcrumb-wrap">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb" style="background:transparent; padding:0; margin:0; display:flex; gap:8px; align-items:center;">
+                                            <li class="breadcrumb-item">
+                                                <a href="/Default/Index/" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px;">
+                                                    <i class="fal fa-home"></i> Ana Sayfa
+                                                </a>
+                                            </li>
+                                            <li style="color:rgba(255,255,255,0.4); font-size:13px;"><i class="fal fa-chevron-right"></i></li>
+                                            <li class="breadcrumb-item active" aria-current="page" style="color:#ff8c4d; font-weight:600; font-size:15px;">İletişim</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <svg style="position:absolute; bottom:-1px; left:0; width:100%; height:60px; z-index:2;" viewBox="0 0 1440 60" preserveAspectRatio="none">
+                <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f4f5f9"></path>
+            </svg>
+        </section>
+        <!-- breadcrumb-area-end -->
+        <!-- message-form-area -->
+        <section class="contact-area pt-120 pb-120" style="background:#f4f5f9;">
+            <div class="container">
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-lg-8">
+                            <div id="successAlert" style="display:flex; align-items:center; gap:16px; background:linear-gradient(135deg,#eafaf1,#f4fef8); border:1px solid #b7ebc6; border-left:5px solid #28a745; border-radius:14px; padding:20px 24px; box-shadow:0 5px 20px rgba(40,167,69,0.08); animation:slideDownAlert .4s ease both;">
+                                <div style="width:46px; height:46px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 3px 10px rgba(40,167,69,0.15);">
+                                    <i class="fas fa-check-circle" style="color:#28a745; font-size:19px;"></i>
+                                </div>
+                                <div style="flex:1;">
+                                    <h6 style="margin:0 0 4px; color:#1e7e34; font-weight:700; font-size:15px;">Mesajınız Gönderildi</h6>
+                                    <p style="margin:0; color:#3a6b45; font-size:13.5px; line-height:1.6;">@TempData["SuccessMessage"]</p>
+                                </div>
+                                <span onclick="document.getElementById('successAlert').style.display='none';" style="cursor:pointer; color:#1e7e34; font-size:20px; line-height:1; opacity:.6; transition:opacity .2s; flex-shrink:0;"
+                                      onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='.6';">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="row justify-content-center mb-4">
+                        <div class="col-lg-8">
+                            <div id="errorAlert" style="display:flex; align-items:center; gap:16px; background:linear-gradient(135deg,#fdeaea,#fff5f5); border:1px solid #f5c6cb; border-left:5px solid #dc3545; border-radius:14px; padding:20px 24px; box-shadow:0 5px 20px rgba(220,53,69,0.08); animation:slideDownAlert .4s ease both;">
+                                <div style="width:46px; height:46px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 3px 10px rgba(220,53,69,0.15);">
+                                    <i class="fas fa-exclamation-triangle" style="color:#dc3545; font-size:19px;"></i>
+                                </div>
+                                <div style="flex:1;">
+                                    <h6 style="margin:0 0 4px; color:#a71d2a; font-weight:700; font-size:15px;">Mesajınız Gönderilemedi</h6>
+                                    <p style="margin:0; color:#8b3a3a; font-size:13.5px; line-height:1.6;">@TempData["ErrorMessage"]</p>
+                                </div>
+                                <span onclick="document.getElementById('errorAlert').style.display='none';" style="cursor:pointer; color:#a71d2a; font-size:20px; line-height:1; opacity:.6; transition:opacity .2s; flex-shrink:0;"
+                                      onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='.6';">&times;</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div style="background:#fff; border-radius:20px; padding:50px 45px; box-shadow:0 5px 30px rgba(0,0,0,0.06);">
+                            <div style="text-align:center; margin-bottom:36px;">
+                                <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                                    <i class="fal fa-paper-plane"></i> Mesaj Gönder
+                                </span>
+                                <h2 style="font-size:28px; font-weight:700; color:#28314b; margin-bottom:12px;">Size Nasıl Yardımcı Olabiliriz?</h2>
+                                <p style="color:#6b7280; font-size:14.5px; line-height:1.8;">Sorularınızı, taleplerinizi ya da geri bildirimlerinizi aşağıdaki formu doldurarak bize iletebilirsiniz. En kısa sürede size dönüş yapacağız.</p>
+                            </div>
+
+                            <form asp-controller="DefaultMessage" asp-action="DefaultCreateMessage" method="post">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <div style="position:relative;">
+                                            <i class="fas fa-user" style="position:absolute; left:18px; top:50%; transform:translateY(-50%); color:#ff5e14; font-size:14px;"></i>
+                                            <input type="text" name="NameSurname" placeholder="Adınız Soyadınız" required
+                                                   style="width:100%; padding:14px 18px 14px 44px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; color:#28314b; outline:none; box-sizing:border-box; transition:border-color .2s, background .2s;"
+                                                   onfocus="this.style.borderColor='#ff5e14'; this.style.background='#fff';"
+                                                   onblur="this.style.borderColor='#eceef4'; this.style.background='#f9fafc';" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div style="position:relative;">
+                                            <i class="fas fa-envelope" style="position:absolute; left:18px; top:50%; transform:translateY(-50%); color:#ff5e14; font-size:14px;"></i>
+                                            <input type="email" name="Email" placeholder="E-posta Adresiniz" required
+                                                   style="width:100%; padding:14px 18px 14px 44px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; color:#28314b; outline:none; box-sizing:border-box; transition:border-color .2s, background .2s;"
+                                                   onfocus="this.style.borderColor='#ff5e14'; this.style.background='#fff';"
+                                                   onblur="this.style.borderColor='#eceef4'; this.style.background='#f9fafc';" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <div style="position:relative;">
+                                            <i class="fas fa-phone" style="position:absolute; left:18px; top:50%; transform:translateY(-50%); color:#ff5e14; font-size:14px;"></i>
+                                            <input type="text" name="PhoneNumber" placeholder="Telefon Numaranız" required
+                                                   style="width:100%; padding:14px 18px 14px 44px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; color:#28314b; outline:none; box-sizing:border-box; transition:border-color .2s, background .2s;"
+                                                   onfocus="this.style.borderColor='#ff5e14'; this.style.background='#fff';"
+                                                   onblur="this.style.borderColor='#eceef4'; this.style.background='#f9fafc';" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div style="position:relative;">
+                                            <i class="fas fa-tag" style="position:absolute; left:18px; top:50%; transform:translateY(-50%); color:#ff5e14; font-size:14px;"></i>
+                                            <input type="text" name="Subject" placeholder="Konu" required
+                                                   style="width:100%; padding:14px 18px 14px 44px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; color:#28314b; outline:none; box-sizing:border-box; transition:border-color .2s, background .2s;"
+                                                   onfocus="this.style.borderColor='#ff5e14'; this.style.background='#fff';"
+                                                   onblur="this.style.borderColor='#eceef4'; this.style.background='#f9fafc';" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label style="display:block; font-weight:600; color:#28314b; margin-bottom:10px; font-size:14px;">Mesajınız</label>
+                                    <textarea name="MessageDetail" rows="6" required placeholder="Mesajınızı buraya yazın..."
+                                              style="width:100%; padding:16px 18px; border:1px solid #eceef4; border-radius:10px; background:#f9fafc; font-size:14px; color:#28314b; outline:none; box-sizing:border-box; resize:vertical; font-family:inherit; line-height:1.6; transition:border-color .2s, background .2s;"
+                                              onfocus="this.style.borderColor='#ff5e14'; this.style.background='#fff';"
+                                              onblur="this.style.borderColor='#eceef4'; this.style.background='#f9fafc';"></textarea>
+                                </div>
+
+                                <button type="submit"
+                                        style="display:inline-flex; align-items:center; gap:10px; padding:15px 36px; background:#ff5e14; color:#fff; border:none; border-radius:10px; font-weight:700; font-size:14.5px; cursor:pointer; transition:background .25s ease, transform .15s ease;"
+                                        onmouseover="this.style.background='#28314b';" onmouseout="this.style.background='#ff5e14';"
+                                        onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                                    Mesajı Gönder <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- message-form-area-end -->
+        @await Component.InvokeAsync("DefaultNewsletter")
+    </main>
+    <!-- main-area-end -->
+    @await Component.InvokeAsync("LayoutFooter")
+    @await Component.InvokeAsync("LayoutScript")
+</body>
+</html>
+
+<style>
+    @@keyframes slideDownAlert {
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

@@ -1,0 +1,86 @@
+﻿@model CreateGalleryDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-images me-1"></i>Galeri</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="GalleryList">Galeri</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Yeni Ekle</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-6 col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="rounded-4 d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:52px; height:52px; background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+                        <i class="bi bi-images text-white fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Yeni Görsel Ekle</h5>
+                        <p class="text-muted small mb-0">Galeriye görsel ekleyin</p>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <form asp-action="CreateGallery" method="post">
+                    <div class="mb-4">
+                        <label asp-for="Title" class="form-label fw-semibold">Başlık</label>
+                        <input asp-for="Title" class="form-control rounded-3" placeholder="Örn: Ofis Görselleri" autofocus />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ImageUrl" class="form-label fw-semibold">Görsel URL</label>
+                        <input asp-for="ImageUrl" class="form-control rounded-3" placeholder="https://..." onchange="previewImg(event)" />
+                        <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                        <img id="imgPreview" class="rounded-3 d-none mt-2 w-100" style="max-height:220px; object-fit:cover;" />
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="GalleryList" class="btn btn-light rounded-pill px-4">
+                            Vazgeç
+                        </a>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                            <i class="bi bi-check-lg me-1"></i>Kaydet
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImg(event) {
+        var preview = document.getElementById('imgPreview');
+        var url = event.target.value;
+        if (url) {
+            preview.src = url;
+            preview.classList.remove('d-none');
+        } else {
+            preview.classList.add('d-none');
+        }
+    }
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

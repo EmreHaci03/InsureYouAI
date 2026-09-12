@@ -1,0 +1,80 @@
+﻿<div class="row row-cols-1 row-cols-lg-3 g-4">
+    <div class="col">
+        <div class="card rounded-4 h-100">
+            <div class="card-body" style="padding-bottom:32px;">
+                <p class="mb-3 text-center">Poliçe Türlerine Göre Dağılım</p>
+                <div id="chartPolicyType"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card rounded-4 h-100">
+            <div class="card-body text-center" style="padding-bottom:32px;">
+                <p class="mb-3">Toplam Yorum</p>
+                <div id="chartComments"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card rounded-4 h-100">
+            <div class="card-body text-center" style="padding-bottom:32px;">
+                <p class="mb-3">Toplam Mesaj</p>
+                <div id="chartMessages"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js"></script>
+<script>
+    var optionsPolicyType = {
+        series: @Html.Raw(ViewBag.PolicyTypeCounts),
+        chart: { type: 'donut', height: 240 },
+        labels: @Html.Raw(ViewBag.PolicyTypeNames),
+        colors: ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#06b6d4'],
+        legend: { position: 'bottom', fontSize: '12px' },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) { return Math.round(val) + '%'; }
+        }
+    };
+    new ApexCharts(document.querySelector("#chartPolicyType"), optionsPolicyType).render();
+
+    var optionsComments = {
+        series: [100],
+        chart: { type: 'radialBar', height: 240 },
+        plotOptions: {
+            radialBar: {
+                hollow: { size: '55%' },
+                dataLabels: {
+                    value: {
+                        fontSize: '26px',
+                        formatter: function () { return '@ViewBag.TotalComments'; }
+                    },
+                    name: { show: false }
+                }
+            }
+        },
+        colors: ['#22c55e']
+    };
+    new ApexCharts(document.querySelector("#chartComments"), optionsComments).render();
+
+    var optionsMessages = {
+        series: [100],
+        chart: { type: 'radialBar', height: 240 },
+        plotOptions: {
+            radialBar: {
+                hollow: { size: '55%' },
+                dataLabels: {
+                    value: {
+                        fontSize: '26px',
+                        formatter: function () { return '@ViewBag.TotalMessages'; }
+                    },
+                    name: { show: false }
+                }
+            }
+        },
+        colors: ['#06b6d4']
+    };
+    new ApexCharts(document.querySelector("#chartMessages"), optionsMessages).render();
+</script>

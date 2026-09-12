@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "PDF Poliçe Analizi (Claude)";
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-file-earmark-pdf-fill me-1"></i>Poliçe Analizi</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">PDF Poliçe Analizi</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+
+        <h5 class="mb-3 fw-semibold">
+            <i class="bi bi-file-earmark-pdf-fill text-danger me-1"></i>PDF Yükle → AI ile Poliçe Analizi
+        </h5>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>@ViewBag.Error
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <form asp-action="PdfAnalyze" method="post" enctype="multipart/form-data" id="analyzeForm">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Poliçe PDF Dosyası</label>
+                <input type="file" class="form-control rounded-3" name="pdfFile" accept="application/pdf" required />
+            </div>
+            <button class="btn btn-primary rounded-pill px-4 shadow-sm" type="submit" id="submitBtn">
+                <i class="bi bi-cpu me-1"></i> AI ile Analiz Et
+            </button>
+        </form>
+
+        @if (ViewBag.AnalysisResult != null)
+        {
+            <hr class="my-4" />
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-robot text-primary fs-4 me-2"></i>
+                <h5 class="mb-0">AI Analiz Sonucu</h5>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="markdown-body">
+                        @Html.Raw(ViewBag.AnalysisResult)
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .markdown-body {
+        font-size: 15px;
+        line-height: 1.7;
+        color: #24292f;
+    }
+
+        .markdown-body h1, .markdown-body h2 {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .markdown-body h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .markdown-body ul, .markdown-body ol {
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-body strong {
+            color: #dc2626;
+            font-weight: 600;
+            background: #fef2f2;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1rem;
+        }
+
+    .card {
+        border-radius: 16px;
+    }
+</style>
+
+<script>
+    document.getElementById('analyzeForm').addEventListener('submit', function () {
+        var btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Analiz Ediliyor...';
+    });
+</script>

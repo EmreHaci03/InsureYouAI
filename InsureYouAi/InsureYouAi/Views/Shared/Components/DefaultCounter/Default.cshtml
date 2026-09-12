@@ -1,0 +1,75 @@
+﻿<div class="counter-area p-relative" style="background:#28314b; padding:70px 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="single-counter" data-aos="fade-up" data-aos-duration="1000" style="text-align:center; padding:20px;">
+                    <i class="fal fa-briefcase" style="color:#ff5e14; font-size:32px; margin-bottom:14px; display:block;"></i>
+                    <div class="counter p-relative">
+                        <span class="count" data-count="@ViewBag.Services" style="color:#fff; font-size:42px; font-weight:700;">0</span><span style="color:#fff; font-size:32px; font-weight:700;">+</span>
+                        <p style="color:rgba(255,255,255,0.6); font-size:15px; margin-top:6px; margin-bottom:0;">Hizmet</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="single-counter" data-aos="fade-up" data-aos-duration="1300" style="text-align:center; padding:20px;">
+                    <i class="fal fa-smile" style="color:#ff5e14; font-size:32px; margin-bottom:14px; display:block;"></i>
+                    <div class="counter p-relative">
+                        <span class="count" data-count="@ViewBag.Testimonial" style="color:#fff; font-size:42px; font-weight:700;">0</span><span style="color:#fff; font-size:32px; font-weight:700;">+</span>
+                        <p style="color:rgba(255,255,255,0.6); font-size:15px; margin-top:6px; margin-bottom:0;">Mutlu Müşteri</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="single-counter" data-aos="fade-up" data-aos-duration="1600" style="text-align:center; padding:20px;">
+                    <i class="fal fa-tags" style="color:#ff5e14; font-size:32px; margin-bottom:14px; display:block;"></i>
+                    <div class="counter p-relative">
+                        <span class="count" data-count="@ViewBag.Categories" style="color:#fff; font-size:42px; font-weight:700;">0</span><span style="color:#fff; font-size:32px; font-weight:700;">+</span>
+                        <p style="color:rgba(255,255,255,0.6); font-size:15px; margin-top:6px; margin-bottom:0;">Kategori</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="single-counter" data-aos="fade-up" data-aos-duration="1900" style="text-align:center; padding:20px;">
+                    <i class="fal fa-newspaper" style="color:#ff5e14; font-size:32px; margin-bottom:14px; display:block;"></i>
+                    <div class="counter p-relative">
+                        <span class="count" data-count="@ViewBag.Articles" style="color:#fff; font-size:42px; font-weight:700;">0</span><span style="color:#fff; font-size:32px; font-weight:700;">+</span>
+                        <p style="color:rgba(255,255,255,0.6); font-size:15px; margin-top:6px; margin-bottom:0;">Makale</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var counters = document.querySelectorAll('.count');
+
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    var counter = entry.target;
+                    var target = parseInt(counter.dataset.count) || 0;
+                    var current = 0;
+                    var duration = 1500;
+                    var stepTime = Math.max(Math.floor(duration / (target || 1)), 15);
+
+                    var timer = setInterval(function () {
+                        current++;
+                        counter.textContent = current;
+                        if (current >= target) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        }
+                    }, stepTime);
+
+                    observer.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        counters.forEach(function (counter) {
+            observer.observe(counter);
+        });
+    });
+</script>

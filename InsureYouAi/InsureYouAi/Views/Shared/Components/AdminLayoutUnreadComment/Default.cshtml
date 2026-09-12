@@ -1,0 +1,55 @@
+﻿@model List<ResultCommentDto>
+<li class="nav-item dropdown dropdown-large">
+    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
+        <div class="messages">
+            <span class="notify-badge">@(Model?.Count ?? 0)</span>
+            <i class="bi bi-chat-square-text-fill"></i>
+        </div>
+    </a>
+    <div class="dropdown-menu dropdown-menu-end p-0" style="width:340px;">
+        <div class="p-2 border-bottom m-2 d-flex justify-content-between align-items-center">
+            <h5 class="h5 mb-0">Onay Bekleyen Yorumlar</h5>
+            <span class="badge rounded-pill" style="background:#6366f1; color:#fff; font-size:11px;">@(Model?.Count ?? 0)</span>
+        </div>
+        <div class="header-comment-list p-2">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var item in Model.Take(10))
+                {
+                    var safeUser = item.AppUser ?? "Anonim";
+                    var initial = string.IsNullOrWhiteSpace(safeUser) ? "?" : safeUser.Trim()[0].ToString().ToUpper();
+                    var preview = item.CommentDetail?.Length > 45 ? item.CommentDetail.Substring(0, 45) + "..." : item.CommentDetail;
+
+                    <a class="dropdown-item" href="/Comment/CommentDetail/@item.CommentId">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                                 style="width:42px; height:42px; background:linear-gradient(135deg,#6366f1,#8b5cf6); font-size:14px;">
+                                @initial
+                            </div>
+                            <div class="ms-3 flex-grow-1" style="min-width:0;">
+                                <h6 class="mb-0 text-truncate" style="font-size:13.5px; font-weight:600; color:#28314b;">
+                                    @safeUser
+                                    <span class="float-end text-secondary" style="font-size:11px;">@item.CommentDate.ToString("dd MMM")</span>
+                                </h6>
+                                <small class="text-secondary d-flex align-items-center text-truncate" style="font-size:12px;">@preview</small>
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="text-center text-muted small py-4">
+                    <i class="bi bi-check2-circle" style="font-size:24px; display:block; margin-bottom:8px; opacity:.5;"></i>
+                    Onay bekleyen yorum yok
+                </div>
+            }
+        </div>
+        <div class="p-2">
+            <div><hr class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/Comment/CommentList/">
+                <div class="text-center">Tüm Yorumları Gör</div>
+            </a>
+        </div>
+    </div>
+</li>

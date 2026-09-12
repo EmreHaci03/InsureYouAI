@@ -1,0 +1,64 @@
+﻿@model List<ResultServiceDto>
+<section id="services-05" class="services-05 services-09 pt-240 pb-100 p-relative fix" style="background-color: #28314b; position:relative; overflow:hidden;">
+    <div style="position:absolute; top:-80px; right:-80px; width:280px; height:280px; border-radius:50%; background:rgba(255,94,20,0.08); filter:blur(20px);"></div>
+    <div style="position:absolute; bottom:-100px; left:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,0.03);"></div>
+
+    <div class="container" style="position:relative; z-index:2;">
+        <div class="row align-items-center">
+            <div class="col-lg-12 col-md-12">
+                <div class="section-title center-align mb-50 text-center" data-aos="fade-up" data-aos-duration="1000">
+                    <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.15); color:#ff8c4d; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px; border:1px solid rgba(255,94,20,0.3);">
+                        <i class="fal fa-shield-check"></i> Hizmetlerimiz
+                    </span>
+                    <h2 style="color:#fff; font-size:32px; font-weight:700; margin:0;">
+                        Sizler İçin En İyi Çözümleri Sunuyoruz
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4" data-aos="fade-up" data-aos-duration="1000">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="services-box-02 service-dark-card" style="background:#323b57; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); transition:transform .3s ease, box-shadow .3s ease; height:100%;"
+                         onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.3)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        <div class="services-img" style="position:relative; overflow:hidden;">
+                            <img src="@item.ImageUrl" alt="@item.Title" style="width:100%; height:220px; object-fit:cover; display:block; transition:transform .5s ease;" class="service-thumb">
+                            <div class="services-content2" style="padding:30px 26px;">
+                                <div class="icon" style="width:52px; height:52px; border-radius:14px; background:rgba(255,94,20,0.15); display:flex; align-items:center; justify-content:center; margin-bottom:18px;">
+                                    <i class="@item.IconUrl" style="color:#ff5e14; font-size:22px;"></i>
+                                </div>
+                                <h4 style="margin-bottom:12px;">
+                                    <a href="/Default/Index/" style="color:#fff; font-size:18px; font-weight:700; text-decoration:none; transition:color .2s;"
+                                       onmouseover="this.style.color='#ff5e14';" onmouseout="this.style.color='#fff';">
+                                        @item.Title
+                                    </a>
+                                </h4>
+                                <p style="color:#c9cddb; font-size:14px; line-height:1.75; margin-bottom:18px;">@item.Description</p>
+                                <a class="link" href="/Default/Index/" style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(255,94,20,0.15); color:#ff5e14; text-decoration:none;">
+                                    <i class="fal fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-md-12 text-center">
+                <div class="text-bg" data-aos="fade-up" data-aos-duration="1000">
+                    <h2 style="color:rgba(255,255,255,0.06); font-weight:800; letter-spacing:2px;">Avantajlarımız</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .service-dark-card:hover .service-thumb {
+        transform: scale(1.08);
+    }
+</style>

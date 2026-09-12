@@ -1,0 +1,75 @@
+﻿@model List<ResultServiceDto>
+@{
+    int count = 0;
+}
+<section class="service-details pb-60 p-relative fix">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.Take(6))
+            {
+                count++;
+
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="services-box01 mb-30" data-aos="fade-left">
+                        <div class="number">@count.ToString("D2")</div>
+
+                        <div style="margin-bottom: 15px;">
+                            @switch (item.Title)
+                            {
+                                case "Sağlık Sigortası":
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5e14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        <path d="M3.5 12h4l1.5-3 2 6 1.5-3h8"></path>
+                                    </svg>
+                                    break;
+
+                                case "Konut Sigortası":
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5e14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </svg>
+                                    break;
+
+                                case "İşyeri Sigortası":
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5e14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="7" width="20" height="14" rx="2"></rect>
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                    </svg>
+                                    break;
+
+                                case "Araç Sigortası":
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5e14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 17h14M5 17a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm14 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM3 17V9l2-5h14l2 5v8"></path>
+                                        <path d="M3 11h18"></path>
+                                    </svg>
+                                    break;
+
+                                case "Seyahat Sigortası":
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5e14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 16l20-8-8 20-3-9-9-3z"></path>
+                                    </svg>
+                                    break;
+
+                                case "Hayat Sigortası":
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5e14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    break;
+
+                                default:
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff5e14" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    </svg>
+                                    break;
+                            }
+                        </div>
+
+                        <h5>@item.Title</h5>
+                        <p>@item.Description</p>
+                        <a href="/Default/Index/" class="mt-15 hover-underline-animation">Daha Fazlası</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

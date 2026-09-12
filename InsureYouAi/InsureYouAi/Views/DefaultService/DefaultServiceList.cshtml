@@ -1,0 +1,106 @@
+﻿@model List<ResultServiceDto>
+@{
+    Layout = null;
+}
+<!doctype html>
+<html class="no-js" lang="zxx">
+@await Component.InvokeAsync("LayoutHead")
+<body>
+    @await Component.InvokeAsync("LayoutHeader")
+    @await Component.InvokeAsync("LayoutMobileMenu")
+    <main>
+
+        <!-- breadcrumb-area -->
+        <section class="breadcrumb-area d-flex align-items-center" style="
+            background-image: linear-gradient(135deg, rgba(20, 25, 45, 0.85), rgba(255, 94, 20, 0.35)), url('/defaultimages/coverimages/cover0.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            ">
+            <div style="position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,94,20,0.15); filter:blur(10px);"></div>
+            <div style="position:absolute; bottom:-80px; left:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.06);"></div>
+
+            <div class="container" style="position:relative; z-index:2;">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="breadcrumb-wrap text-left">
+                            <div class="breadcrumb-title">
+                                <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.15); color:#ff8c4d; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:18px; border:1px solid rgba(255,94,20,0.3);">
+                                    <i class="fal fa-briefcase"></i> Neler Sunuyoruz
+                                </span>
+                                <h2 style="color:#fff; font-size:42px; font-weight:700; margin-bottom:15px; letter-spacing:.5px; text-shadow:0 2px 20px rgba(0,0,0,0.3);">Hizmetlerimiz</h2>
+                                <div class="breadcrumb-wrap">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb" style="background:transparent; padding:0; margin:0; display:flex; gap:8px; align-items:center;">
+                                            <li class="breadcrumb-item">
+                                                <a href="/Default/Index/" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px;">
+                                                    <i class="fal fa-home"></i> Ana Sayfa
+                                                </a>
+                                            </li>
+                                            <li style="color:rgba(255,255,255,0.4); font-size:13px;"><i class="fal fa-chevron-right"></i></li>
+                                            <li class="breadcrumb-item active" aria-current="page" style="color:#ff8c4d; font-weight:600; font-size:15px;">Hizmetlerimiz</li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <svg style="position:absolute; bottom:-1px; left:0; width:100%; height:60px; z-index:2;" viewBox="0 0 1440 60" preserveAspectRatio="none">
+                <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f4f5f9"></path>
+            </svg>
+        </section>
+        <!-- breadcrumb-area-end -->
+        <!-- services-list -->
+        <section class="service-details pt-120 pb-120" style="background:#f4f5f9;">
+            <div class="container">
+                <div class="row justify-content-center mb-60" style="margin-bottom:60px;">
+                    <div class="col-lg-7 text-center">
+                        <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.1); color:#ff5e14; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:16px;">
+                            <i class="fal fa-shield-check"></i> Hizmetlerimiz
+                        </span>
+                        <h2 style="font-size:34px; font-weight:700; color:#28314b; line-height:1.35; margin-bottom:16px;">İhtiyacınıza Uygun Sigorta Çözümleri</h2>
+                        <p style="color:#6b7280; font-size:15px; line-height:1.8;">Sağlık, konut, araç ve hayat sigortası alanlarında güvenilir ve kapsamlı çözümlerle her zaman yanınızdayız.</p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-4 col-md-6">
+                            <div style="background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 5px 25px rgba(0,0,0,0.06); transition:transform .3s ease, box-shadow .3s ease; height:100%;"
+                                 onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.12)';"
+                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 25px rgba(0,0,0,0.06)';">
+                                <div style="height:220px; overflow:hidden; position:relative;">
+                                    <img src="@item.ImageUrl" alt="@item.Title" style="width:100%; height:100%; object-fit:cover;">
+                                    <div style="position:absolute; bottom:-28px; left:24px; width:56px; height:56px; border-radius:14px; background:#ff5e14; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(255,94,20,0.35);">
+                                        <i class="@item.IconUrl" style="color:#fff; font-size:22px;"></i>
+                                    </div>
+                                </div>
+                                <div style="padding:45px 28px 30px;">
+                                    <h4 style="font-size:19px; font-weight:700; color:#28314b; margin-bottom:14px;">@item.Title</h4>
+                                    <p style="color:#6b7280; font-size:14px; line-height:1.8; margin-bottom:20px;">@item.Description</p>
+                                    <a href="/DefaultService/DefaultServiceList/" style="display:inline-flex; align-items:center; gap:8px; color:#ff5e14; font-weight:600; font-size:14px; text-decoration:none;">
+                                        Detaylı Bilgi <i class="fal fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+        <!-- services-list-end -->
+        @await Component.InvokeAsync("DefaultNewsletter")
+    </main>
+    <!-- main-area-end -->
+    @await Component.InvokeAsync("LayoutFooter")
+    @await Component.InvokeAsync("LayoutScript")
+</body>
+</html>

@@ -1,0 +1,84 @@
+﻿@model UpdatePricingPlanItemDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+    var plans = ViewBag.Plans as List<ResultPricingPlanDto>;
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-list-check me-1"></i>Plan Öğeleri</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="PricingPlanItemList">Plan Öğeleri</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Düzenle</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-6 col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="rounded-4 d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:52px; height:52px; background:linear-gradient(135deg,#f59e0b,#ef4444);">
+                        <i class="bi bi-pencil-fill text-white fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Öğe Düzenle</h5>
+                        <p class="text-muted small mb-0">Öğe bilgilerini güncelleyin</p>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <form asp-action="UpdatePricingPlanItem" method="post">
+                    <input type="hidden" asp-for="PricingPlanItemId" />
+
+                    <div class="mb-4">
+                        <label asp-for="PricingPlanId" class="form-label fw-semibold">Bağlı Olduğu Plan</label>
+                        <select asp-for="PricingPlanId" class="form-select rounded-3">
+                            <option value="">-- Seçiniz --</option>
+                            @if (plans != null)
+                            {
+                                @foreach (var plan in plans)
+                                {
+                                    <option value="@plan.PricingPlanId" selected="@(plan.PricingPlanId == Model.PricingPlanId)">@plan.Title</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="PricingPlanId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="PlanItem" class="form-label fw-semibold">İçerik</label>
+                        <textarea asp-for="PlanItem" class="form-control rounded-3" rows="4" autofocus></textarea>
+                        <span asp-validation-for="PlanItem" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="PricingPlanItemList" class="btn btn-light rounded-pill px-4">
+                            Vazgeç
+                        </a>
+                        <button type="submit" class="btn btn-warning rounded-pill px-4 shadow-sm text-white">
+                            <i class="bi bi-check-lg me-1"></i>Güncelle
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

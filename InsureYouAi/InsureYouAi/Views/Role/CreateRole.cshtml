@@ -1,0 +1,79 @@
+﻿@model CreateAppRoleDto
+@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+@section BreadCrumb {
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3"><i class="bi bi-shield-lock-fill me-1"></i>Roller</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item">
+                        <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-action="RoleList">Roller</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Yeni Rol</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-xl-7 col-lg-9">
+
+        <div class="text-center mb-4">
+            <div class="rounded-4 d-inline-flex align-items-center justify-content-center mb-3"
+                 style="width:64px; height:64px; background:linear-gradient(135deg,#6366f1,#8b5cf6); box-shadow:0 8px 20px rgba(99,102,241,0.3);">
+                <i class="bi bi-shield-plus text-white fs-3"></i>
+            </div>
+            <h4 class="fw-bold mb-1">Yeni Rol Oluştur</h4>
+            <p class="text-muted small mb-0">Sisteme yeni bir kullanıcı rolü ekleyin</p>
+        </div>
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <div class="card border-0 shadow-sm" style="border-radius:20px;">
+            <div class="card-body p-4 p-md-5">
+                <form asp-action="CreateRole" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-tag-fill me-1" style="color:#6366f1;"></i>Rol Adı
+                        </label>
+                        <input asp-for="RoleName" class="form-control form-control-lg rounded-3"
+                               placeholder="Örn: Editör, Müşteri Temsilcisi" required autofocus>
+                        <span asp-validation-for="RoleName" class="text-danger small"></span>
+                        <div class="form-text">Bu isim sistem genelinde kullanıcı yetkilendirmesinde görünecektir.</div>
+                    </div>
+
+                    <div class="d-flex gap-2 pt-2">
+                        <a asp-action="RoleList" class="btn btn-light rounded-pill px-4 flex-grow-1 fw-semibold">
+                            <i class="bi bi-arrow-left me-1"></i>Vazgeç
+                        </a>
+                        <button type="submit" class="btn rounded-pill px-4 flex-grow-1 fw-semibold text-white"
+                                style="background:linear-gradient(135deg,#6366f1,#8b5cf6); border:none;">
+                            <i class="bi bi-check-circle-fill me-1"></i>Rolü Oluştur
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 0.2rem rgba(139,92,246,0.15);
+    }
+</style>

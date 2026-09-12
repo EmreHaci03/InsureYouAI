@@ -1,0 +1,271 @@
+﻿@model GetArticleByIdDto
+@{
+    Layout = "~/Areas/Member/Views/Shared/_MemberLayout.cshtml";
+    ViewData["Title"] = Model?.Title ?? "Makale Detayı";
+}
+
+<div style="max-width:820px; margin:0 auto;">
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="flash flash-error">@TempData["ErrorMessage"]</div>
+    }
+
+    @if (Model == null)
+    {
+        <div class="m-card">
+            <div class="m-empty">
+                <div class="m-empty__icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                </div>
+                <h3>Makale bulunamadı</h3>
+                <p>Aradığınız makale silinmiş ya da mevcut olmayabilir.</p>
+                <a asp-area="Member" asp-controller="MemberArticle" asp-action="MemberArticleList" class="m-btn m-btn-primary" style="margin-top:16px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Makalelerime Dön
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        var hasCover = !string.IsNullOrWhiteSpace(Model.CoverImageUrl);
+
+        <a asp-area="Member" asp-controller="MemberArticle" asp-action="MemberArticleList" class="back-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Makalelerime Dön
+        </a>
+
+        <div class="m-card" style="overflow:hidden; margin-top:16px;">
+
+            <div class="detail-cover" style="background:@(hasCover ? $"url('{Model.CoverImageUrl}') center/cover" : "var(--ink-900)");">
+                @if (!hasCover)
+                {
+                    <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#e4c98a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                }
+                <div class="detail-cover__overlay">
+                    @if (!string.IsNullOrWhiteSpace(Model.Category))
+                    {
+                        <span class="m-badge m-badge-accent" style="margin-bottom:10px;">@Model.Category</span>
+                    }
+                    <h1 class="detail-cover__title">@Model.Title</h1>
+                </div>
+            </div>
+
+            <div class="m-card__body" style="padding:32px clamp(20px, 4vw, 44px) 40px;">
+
+                <div class="detail-meta">
+                    <div class="detail-meta__author">
+                        <div class="detail-meta__avatar">
+                            @(string.IsNullOrWhiteSpace(Model.User) ? "?" : Model.User.Trim()[0].ToString().ToUpper())
+                        </div>
+                        <div>
+                            <div style="font-size:13px; font-weight:600; color:var(--text-900);">@Model.User</div>
+                            <div style="font-size:11px; color:var(--text-400);">Yazar</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-meta__date">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        @Model.CreatedDate.ToString("dd MMMM yyyy")
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.MainCoverImageUrl))
+                {
+                    <img src="@Model.MainCoverImageUrl" alt="@Model.Title" class="detail-main-image" />
+                }
+
+                <div class="article-content">
+                    @Html.Raw(Model.Content)
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--accent-600);
+        text-decoration: none;
+    }
+
+        .back-link:hover {
+            color: var(--ink-900);
+        }
+
+    .detail-cover {
+        height: 280px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-cover__overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 28px clamp(20px, 4vw, 44px);
+        background: linear-gradient(180deg, transparent, rgba(15, 27, 45, 0.85));
+    }
+
+    .detail-cover__title {
+        font-family: var(--font-display);
+        font-size: 26px;
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+        line-height: 1.25;
+    }
+
+    .detail-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid var(--line-soft);
+    }
+
+    .detail-meta__author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .detail-meta__avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--ink-800);
+        color: #e4c98a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .detail-meta__date {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        color: var(--text-400);
+    }
+
+    .detail-main-image {
+        width: 100%;
+        max-height: 420px;
+        object-fit: cover;
+        border-radius: 14px;
+        margin-bottom: 28px;
+        display: block;
+    }
+
+    .article-content {
+        font-size: 16px;
+        line-height: 1.9;
+        color: var(--text-900);
+    }
+
+        .article-content h2, .article-content h3 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            margin-top: 1.6em;
+            margin-bottom: 0.6em;
+            color: var(--text-900);
+        }
+
+        .article-content h2 {
+            font-size: 21px;
+        }
+
+        .article-content h3 {
+            font-size: 17.5px;
+        }
+
+        .article-content p {
+            margin-bottom: 1em;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 1.2em 0;
+        }
+
+        .article-content a {
+            color: var(--accent-600);
+        }
+
+        .article-content strong {
+            color: var(--text-900);
+        }
+
+        .article-content ul, .article-content ol {
+            padding-left: 1.4em;
+            margin-bottom: 1em;
+        }
+
+        .article-content li {
+            margin-bottom: 0.4em;
+        }
+
+        .article-content blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1em;
+            margin: 1.4em 0;
+            color: var(--text-600);
+            font-style: italic;
+        }
+
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.4em 0;
+            font-size: 14.5px;
+        }
+
+        .article-content th, .article-content td {
+            border: 1px solid var(--line);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .article-content th {
+            background: var(--paper);
+            font-weight: 600;
+        }
+</style>

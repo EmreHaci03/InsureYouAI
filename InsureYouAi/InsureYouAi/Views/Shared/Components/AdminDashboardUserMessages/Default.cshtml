@@ -1,0 +1,58 @@
+﻿@model List<ResultMessageDto>
+@{
+    int i = 0;
+    var last = Model.Count - 1;
+}
+<div class="col-12 col-lg-6 col-xl-6 d-flex">
+    <div class="card rounded-4 w-100">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <h6 class="mb-0">Son Mesajlar</h6>
+                <a href="/Message/MessageList" class="ms-auto small fw-semibold text-decoration-none" style="color:#6366f1;">
+                    Tümünü Gör
+                </a>
+            </div>
+
+            @if (Model != null && Model.Any())
+            {
+
+                @foreach (var item in Model)
+                {
+                    var initial = string.IsNullOrWhiteSpace(item.NameSurname) ? "?" : item.NameSurname.Trim()[0].ToString().ToUpper();
+                    var preview = item.MessageDetail?.Length > 60 ? item.MessageDetail.Substring(0, 60) + "…" : item.MessageDetail;
+
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                             style="width:42px; height:42px; background:linear-gradient(135deg,#6366f1,#8b5cf6); font-size:15px;">
+                            @initial
+                        </div>
+                        <div class="flex-grow-1" style="min-width:0;">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <p class="mb-0 small fw-semibold">@item.NameSurname</p>
+                                @if (!item.IsRead)
+                                {
+                                    <span class="badge rounded-pill" style="background:#fff8ec; color:#f59e0b; font-size:10px;">Yeni</span>
+                                }
+                            </div>
+                            <p class="mb-0 small text-truncate" style="color:#28314b;">@item.Subject</p>
+                            <p class="mb-0 text-muted text-truncate" style="font-size:11.5px;">@preview</p>
+                        </div>
+                        <span class="text-muted flex-shrink-0" style="font-size:11px;">@item.SendDate.ToString("dd MMM")</span>
+                    </div>
+                    if (i != last)
+                    {
+                        <hr>
+                    }
+                    i++;
+                }
+            }
+            else
+            {
+                <div class="text-center py-4">
+                    <i class="bi bi-envelope" style="font-size:28px; color:#c3c2b7;"></i>
+                    <p class="text-muted small mb-0 mt-2">Henüz mesaj bulunmuyor</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

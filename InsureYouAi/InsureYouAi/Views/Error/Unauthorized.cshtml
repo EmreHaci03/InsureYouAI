@@ -1,0 +1,507 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>401 - Yetkisiz Erişim | InsureYouAi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.12), transparent 30%), radial-gradient(circle at 85% 80%, rgba(139, 92, 246, 0.10), transparent 30%), #f7f8fc;
+            color: #28314b;
+            overflow: hidden;
+        }
+
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            position: relative;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(99, 102, 241, 0.08);
+            pointer-events: none;
+        }
+
+        .circle-one {
+            width: 420px;
+            height: 420px;
+            top: -180px;
+            left: -160px;
+        }
+
+        .circle-two {
+            width: 300px;
+            height: 300px;
+            right: -120px;
+            bottom: -100px;
+        }
+
+        .circle-three {
+            width: 120px;
+            height: 120px;
+            right: 12%;
+            top: 12%;
+            border-color: rgba(99, 102, 241, 0.12);
+        }
+
+        .error-container {
+            width: 100%;
+            max-width: 1050px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 28px;
+            padding: 65px 70px;
+            box-shadow: 0 25px 70px rgba(40, 49, 75, 0.10);
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 75px;
+        }
+
+        .error-content {
+            flex: 1;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #28314b;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+        }
+
+        .error-code {
+            font-size: clamp(100px, 13vw, 170px);
+            line-height: .85;
+            font-weight: 800;
+            letter-spacing: -9px;
+            background: linear-gradient(135deg, #6366f1, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+        }
+
+        .error-title {
+            font-size: 34px;
+            line-height: 1.25;
+            font-weight: 800;
+            color: #28314b;
+            margin-bottom: 16px;
+        }
+
+        .error-description {
+            color: #70778a;
+            font-size: 16px;
+            line-height: 1.8;
+            max-width: 540px;
+            margin-bottom: 32px;
+        }
+
+        .error-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            height: 52px;
+            padding: 0 25px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all .25s ease;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.22);
+        }
+
+            .btn-primary:hover {
+                color: #fff;
+                transform: translateY(-3px);
+                box-shadow: 0 14px 30px rgba(99, 102, 241, 0.30);
+            }
+
+        .btn-outline {
+            color: #28314b;
+            background: #fff;
+            border: 1px solid #e7e9ef;
+        }
+
+            .btn-outline:hover {
+                color: #6366f1;
+                border-color: #6366f1;
+                transform: translateY(-3px);
+            }
+
+        .shield-area {
+            width: 330px;
+            height: 330px;
+            flex-shrink: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shield-glow {
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.08);
+            filter: blur(2px);
+        }
+
+        .shield-ring {
+            position: absolute;
+            width: 245px;
+            height: 245px;
+            border: 1px dashed rgba(99, 102, 241, 0.28);
+            border-radius: 50%;
+            animation: rotate 25s linear infinite;
+        }
+
+            .shield-ring::before,
+            .shield-ring::after {
+                content: "";
+                position: absolute;
+                width: 9px;
+                height: 9px;
+                background: #6366f1;
+                border-radius: 50%;
+                box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.10);
+            }
+
+            .shield-ring::before {
+                top: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .shield-ring::after {
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+        .shield {
+            width: 175px;
+            height: 205px;
+            position: relative;
+            background: linear-gradient(145deg, #6366f1, #8b5cf6);
+            clip-path: polygon( 50% 0%, 92% 15%, 88% 58%, 75% 79%, 50% 100%, 25% 79%, 12% 58%, 8% 15% );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 20px 25px rgba(99, 102, 241, 0.25));
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        .shield-inner {
+            width: 130px;
+            height: 160px;
+            background: rgba(255,255,255,.12);
+            clip-path: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #fff;
+        }
+
+            .shield-inner i {
+                font-size: 48px;
+                margin-bottom: 8px;
+            }
+
+            .shield-inner span {
+                font-size: 14px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+            }
+
+        .floating-card {
+            position: absolute;
+            background: #fff;
+            border-radius: 12px;
+            padding: 13px 16px;
+            box-shadow: 0 10px 30px rgba(40, 49, 75, 0.10);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #28314b;
+        }
+
+            .floating-card i {
+                color: #6366f1;
+                font-size: 16px;
+            }
+
+        .card-one {
+            top: 25px;
+            right: 0;
+            animation: floatingSmall 4s ease-in-out infinite;
+        }
+
+        .card-two {
+            bottom: 35px;
+            left: 0;
+            animation: floatingSmall 4s ease-in-out infinite 1s;
+        }
+
+        .bottom-text {
+            position: absolute;
+            bottom: 25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #9aa0b0;
+            font-size: 12px;
+            z-index: 3;
+        }
+
+        @@keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @@keyframes floatingSmall {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+        @@keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @@media (max-width: 850px) {
+            body {
+                overflow: auto;
+            }
+
+            .error-page {
+                padding: 25px 15px 70px;
+            }
+
+            .error-container {
+                padding: 45px 30px;
+                flex-direction: column;
+                gap: 35px;
+                text-align: center;
+            }
+
+            .error-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .error-actions {
+                justify-content: center;
+            }
+
+            .shield-area {
+                width: 290px;
+                height: 270px;
+                order: -1;
+            }
+
+            .brand {
+                margin-bottom: 15px;
+            }
+
+            .error-code {
+                font-size: 110px;
+                letter-spacing: -6px;
+            }
+
+            .error-title {
+                font-size: 27px;
+            }
+        }
+
+        @@media (max-width: 450px) {
+            .error-container {
+                border-radius: 20px;
+                padding: 35px 20px;
+            }
+
+            .shield-area {
+                transform: scale(.82);
+                margin-bottom: -35px;
+            }
+
+            .error-code {
+                font-size: 90px;
+            }
+
+            .error-title {
+                font-size: 23px;
+            }
+
+            .error-description {
+                font-size: 14px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="error-page">
+
+        <div class="circle circle-one"></div>
+        <div class="circle circle-two"></div>
+        <div class="circle circle-three"></div>
+
+        <div class="error-container">
+
+            <div class="error-content">
+
+                <div class="brand">
+                    <div class="brand-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    InsureYouAi
+                </div>
+
+                <div class="error-code">401</div>
+
+                <h1 class="error-title">
+                    Bu kapı sadece<br />
+                    giriş yapanlara açık.
+                </h1>
+
+                <p class="error-description">
+                    Bu sayfayı görüntülemek için önce hesabınıza giriş yapmanız
+                    gerekiyor. Kimliğinizi doğruladıktan sonra kaldığınız
+                    yerden devam edebilirsiniz.
+                </p>
+
+                <div class="error-actions">
+
+                    <a href="/Auth/Login/" class="btn btn-primary">
+                        <i class="fas fa-right-to-bracket"></i>
+                        Giriş Yap
+                    </a>
+
+                    <a href="/Default/Index/" class="btn btn-outline">
+                        <i class="fas fa-house"></i>
+                        Ana Sayfaya Dön
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="shield-area">
+
+                <div class="shield-glow"></div>
+
+                <div class="shield-ring"></div>
+
+                <div class="floating-card card-one">
+                    <i class="fas fa-lock"></i>
+                    <span>Kimlik Gerekli</span>
+                </div>
+
+                <div class="floating-card card-two">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Verileriniz Güvende</span>
+                </div>
+
+                <div class="shield">
+
+                    <div class="shield-inner">
+                        <i class="fas fa-lock"></i>
+                        <span>Locked</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="bottom-text">
+            © @DateTime.Now.Year InsureYouAi · Güveniniz bizim güvencemiz.
+        </div>
+
+    </div>
+
+</body>
+</html>

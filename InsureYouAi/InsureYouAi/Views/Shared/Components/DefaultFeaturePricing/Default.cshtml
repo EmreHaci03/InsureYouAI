@@ -1,0 +1,42 @@
+﻿@model GetPricingPlanByIdDto
+<div class="col-lg-6 col-md-6">
+    <div class="pricing-box pricing-box2 active mb-60" data-aos="fade-left" data-aos-duration="1400"
+         style="background:#28314b; border-radius:20px; padding:45px 35px; position:relative; overflow:hidden; box-shadow:0 20px 45px rgba(40,49,75,0.25); transform:scale(1.04);">
+
+        <span style="position:absolute; top:22px; right:-38px; background:#ff5e14; color:#fff; padding:6px 45px; font-size:12px; font-weight:700; letter-spacing:.5px; transform:rotate(45deg); box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+            EN POPÜLER
+        </span>
+
+        <div class="pricing-head" style="text-align:center; margin-bottom:10px;">
+            <h3 style="color:#fff; font-size:22px; font-weight:700; margin-bottom:18px;">@Model.Title</h3>
+            <div class="price-count">
+                <h2 style="color:#fff; font-size:42px; font-weight:800; margin:0;">
+                    ₺@Model.Price <strong style="font-size:15px; font-weight:500; opacity:.7;">/Ay</strong>
+                </h2>
+            </div>
+            <hr style="border-color:rgba(255,255,255,0.12); margin:28px 0;">
+        </div>
+
+        <div class="pricing-body mt-20 mb-30 text-left">
+            <ul style="list-style:none; padding:0; margin:0;">
+                @foreach (var item in ViewBag.planItem)
+                {
+                    <li style="display:flex; align-items:center; gap:12px; color:rgba(255,255,255,0.85); font-size:14.5px; margin-bottom:16px;">
+                        <span style="display:flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:rgba(255,94,20,0.2); flex-shrink:0;">
+                            <i class="fal fa-check" style="color:#ff5e14; font-size:11px;"></i>
+                        </span>
+                        @item.PlanItem
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="pricing-btn" style="text-align:center;">
+            <a href="/Default/Index/" class="btn ss-btn"
+               style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:15px; background:#ff5e14; color:#fff; border-radius:10px; font-weight:700; font-size:14.5px; text-decoration:none; transition:background .25s ease;"
+               onmouseover="this.style.background='#fff'; this.style.color='#28314b';" onmouseout="this.style.background='#ff5e14'; this.style.color='#fff';">
+                Şimdi Kayıt Ol <i class="fal fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿<!-- breadcrumb-area -->
+<section class="breadcrumb-area d-flex align-items-center" style="
+    background-image: linear-gradient(135deg, rgba(20, 25, 45, 0.85), rgba(255, 94, 20, 0.35)), url('/defaultimages/coverimages/cover0.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    ">
+
+    <!-- dekoratif daireler -->
+    <div style="position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,94,20,0.15); filter:blur(10px);"></div>
+    <div style="position:absolute; bottom:-80px; left:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.06);"></div>
+
+    <div class="container" style="position:relative; z-index:2;">
+        <div class="row align-items-center">
+            <div class="col-xl-12 col-lg-12">
+                <div class="breadcrumb-wrap text-left" style="animation:fadeUpBc .6s ease both;">
+                    <div class="breadcrumb-title">
+                        <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,94,20,0.15); color:#ff8c4d; padding:6px 16px; border-radius:30px; font-size:12.5px; font-weight:600; letter-spacing:.5px; margin-bottom:18px; border:1px solid rgba(255,94,20,0.3);">
+                            <i class="fal fa-newspaper"></i> InsureYou Blog
+                        </span>
+                        <h2 style="color:#fff; font-size:42px; font-weight:700; margin-bottom:15px; letter-spacing:.5px; text-shadow:0 2px 20px rgba(0,0,0,0.3);">Blog</h2>
+                        <div class="breadcrumb-wrap">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb" style="background:transparent; padding:0; margin:0; display:flex; gap:8px; align-items:center;">
+                                    <li class="breadcrumb-item">
+                                        <a href="/Default/Index/" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:15px; display:flex; align-items:center; gap:6px; transition:color .2s;"
+                                           onmouseover="this.style.color='#fff';" onmouseout="this.style.color='rgba(255,255,255,0.7)';">
+                                            <i class="fal fa-home"></i> Ana Sayfa
+                                        </a>
+                                    </li>
+                                    <li style="color:rgba(255,255,255,0.4); font-size:13px;"><i class="fal fa-chevron-right"></i></li>
+                                    <li class="breadcrumb-item active" aria-current="page" style="color:#ff8c4d; font-weight:600; font-size:15px;">Blog</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- alt dalga geçişi -->
+    <svg style="position:absolute; bottom:-1px; left:0; width:100%; height:60px; z-index:2;" viewBox="0 0 1440 60" preserveAspectRatio="none">
+        <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#f4f5f9"></path>
+    </svg>
+</section>
+<!-- breadcrumb-area-end -->
+
+<style>
+    @@keyframes fadeUpBc {
+        from {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
